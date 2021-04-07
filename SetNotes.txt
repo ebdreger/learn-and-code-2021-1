@@ -1,0 +1,47 @@
+Class Card  
+  {
+    shape: 
+    color:
+    shade: 
+    number:
+  }
+
+Methods
+  validate if group
+  compare group of cards
+  shuffle deck
+  shuffle playing surface
+  expand playing surface
+
+Class ComputerPlayer 
+  {
+
+  }
+
+Class Player  
+  {
+    score: 
+    completedSets: [[card1, card2, card3], [etc]]
+  }
+
+Class TableTop
+ {
+
+ }
+
+Class Deck 
+  {
+
+  }
+
+Class Set 
+  {
+
+  }
+
+Class Game
+  {
+    rounds: 
+    timer: 
+    players: []
+  }
