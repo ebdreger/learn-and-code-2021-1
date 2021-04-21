@@ -1,29 +1,45 @@
-# Learn & Code 2021.1 "Set" Project
+# Learn & Code 2021.1 "SET" Project
 
 ## Intended Audience / User
 
-To be determined.  Who are the stakeholders?
+The intended audience is SET players at In Time Tec.
+
+Other stakeholders include Eddy and Trevor.  When appropriate, they will simulate roles such as business analyst,
+product owner technical architect, technical lead, technical account manager, et cetera.
 
 ## MVP
 
 Deadline: By end of Learn & Code.
 
-Scope: TBD
+Scope:
+
+* One player versus computer;
+* Web UI.
+
+## MVP: Specifically Excluded
+
+* No authn/authz;
+* No console or native UI;
+* No leaderboard;
+* No multiplayer;
+* No saved games;
+* No saved scores;
+* No statistics or analysis;
+* No user data.
 
 ## Application Scope: Overall Design
 
-* What end-user experience will we create?  Console?  Graphical?  Both?
-* How will the application be delivered?  Native executable?  (And what platforms?)  Web app?  Both?
-* Multi-user?  Authentication and authorization?
+* End-user experience and application delivery: Web UI.
+* Multi-user with authentication and authorization.
 
-## Application Scope: Features
+## Application Scope: Post-MVP Features / Stretch Goals
 
-To be determined.
+In order of most important to least:
 
-* User data?
-* Persistance?
-* Leaderboard?
-* Saved scores?
+* Multiplayer;
+* Authn and user data;
+* Saved scores, saved games, and leaderboard.
+* Should we consider an improved computer player?
 
 ## Tool Stack
 
