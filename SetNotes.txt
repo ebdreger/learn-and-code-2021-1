@@ -1,52 +1,86 @@
-// *MVP*
+﻿/*
+ * Considerations for all functions / methods:
+ *
+ * - Be small and concise.
+ * - Do one thing, and do it well.
+ * - If we must use switch statements, bury them in low-level classes.
+ * - Use descriptive names.
+ * - Minimize argument count.
+ * - Avoid flag arguments.
+ * - Avoid side effects, including output arguments.
+ * - Do something or answer something, but not both.
+ * - Exceptions instead of error codes.
+ * - DRY.
+ * - Don't worry about getting it right on the first try.
+ * - Revise until you get it right.
+ */
 
-// Data structure
-Class Card  
+// For our MVP:
+
+namespace TBD
 {
-  shape: 
-  color:
-  shade: 
-  number:
-}
+    public struct Card // data structure instead of object
+    {
+        public Unknown shape;
+        public Unknown color;
+        public Unknown shade;
+        public Unknown number;
+    }
 
-Methods
-  * set.validate()
-  * deck.generate()
-  * deck.shuffleDeck()
-  field.shuffle()
-  field.expand()
-  computerPlayer.searchField()
+    public class Set
+    {
+        public bool IsValid();
+        public Unknown SetCardList(Unknown);
+        public Unknown SetSearchTime(Unknown);
+    }
 
-Class ComputerPlayer 
-{
+    public class Deck
+    {
+        public Card Draw();
+        public void Generate();
+        public bool IsEmpty();
+        public void Shuffle();
+    }
 
-}
+    public class Tabletop
+    {
+        public Unknown AddCard(Unknown);
+        public Unknown RemoveCards(Unknown);
+    }
 
-Class Player  
-{
-  score: 
-  completedSets: [[card1, card2, card3], [etc]]
-}
+    public class Player
+    {
+        public Unknown ClaimSet();
+        public Unknown Score(); // equal to count of completed sets
+        private Unknown<Set> completedSets; // [[card1, card2, card3], [etc]]
+    }
 
-Class TableTop
-{
+    public class ComputerPlayer : Player
+    {
+        public Unknown SearchTabletop(Unknown);
+    }
 
-}
+    public struct GameRound // data structure instead of object?
+    {
+        public Deck deck;
+        public Tabletop tabletop;
+        public Unknown timer;
+        public Unknown<Player> players; // players: []
+    }
 
-// Object
-Class Deck 
-{
+    public class Game
+    {
+        public Unknown NewRound(Unknown);
+        private Unknown<GameRound> gameRounds;
+    }
 
-}
+    // TO DO: What about our server?
 
-Class Set 
-{
-
-}
-
-Class Game
-{
-  rounds: 
-  timer: 
-  players: []
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            // TO DO
+        }
+    }
 }
