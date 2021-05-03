@@ -30,21 +30,22 @@ namespace learn_and_code
             Oval                = (DifferentShapes << 1),
             Squiggle            = (DifferentShapes << 2),
             Diamond             = (DifferentShapes << 3),
-            // special
-            MagicOrMask         = 0b__0001_0000__0001_0000__0001_0000__0001_0000,
-            MagicDelta          = 0b__0000_0010__0000_0010__0000_0010__0000_0010,
-            NonInvertedMask     = 0b__1111_0000__1111_0000__1111_0000__1111_0000,
-            InvertedMask        = 0b__0000_1111__0000_1111__0000_1111__0000_1111,
-            AllBits             = ~(UInt32)0
         }
+
+        // special
+        // XXX: BUG - s/public/private/g
+        public static UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
+        public static UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
+        public static UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
+        public static UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
 
         public static BitField FindMatch(BitField[] bitFields)
         {
             // Trace.Assert(2 == bitFields.Length);
             UInt32
-                union = (UInt32)((bitFields[0] | bitFields[1]) & ~BitField.MagicOrMask),
-                xorMask = (((union + (UInt32)BitField.MagicDelta) & (UInt32)BitField.MagicOrMask) * 0b1110);
-            return (BitField)(union ^ xorMask) & BitField.NonInvertedMask;
+                union = (UInt32)(bitFields[0] | bitFields[1]) & ~MagicOrMask,
+                xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
+            return (BitField)((union ^ xorMask) & NonInvertedMask);
         }
 
         public static Boolean IsMatch(BitField[] bitFields)
@@ -52,8 +53,8 @@ namespace learn_and_code
             Trace.Assert(3 == bitFields.Length);
             BitField
                 intersection = bitFields[0] & bitFields[1] & bitFields[2],
-                allDifferentCheck = (BitField)(intersection - BitField.MagicDelta),
-                matches = (allDifferentCheck & BitField.NonInvertedMask) ^ BitField.MagicOrMask;
+                allDifferentCheck = (BitField)(intersection - MagicDelta),
+                matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
             Console.WriteLine("{0:x} & {1:x} & {2:x} => i {3:x} => adc {4:x} => match {5:x}",
                               bitFields[0], bitFields[1], bitFields[2],
                               intersection,
@@ -76,13 +77,13 @@ namespace learn_and_code
         public static BitField StringToBitField(string input)
         {
             byte position = 36;
-            UInt32 result = (UInt32)BitField.MagicOrMask;
+            UInt32 result = MagicOrMask;
             foreach (char c in input)
             {
                 // Console.WriteLine("{0}", ((position -= 8) + c - '0'));
                 result |= (UInt32)1 << ((position -= 8) + c - '0');
             }
-            result |= (~(UInt32)result >> 4) & (UInt32)BitField.InvertedMask;
+            result |= (~(UInt32)result >> 4) & (UInt32)InvertedMask;
             return (BitField)result;
         }
     }
@@ -92,20 +93,20 @@ namespace learn_and_code
         static void Main(string[] args)
         {
             Card.BitField[] bitFields = {
-                Card.BitField.One | Card.BitField.Red | Card.BitField.Solid | Card.BitField.Oval | Card.BitField.MagicOrMask,
-                Card.BitField.Two | Card.BitField.Purple | Card.BitField.Solid | Card.BitField.Oval | Card.BitField.MagicOrMask,
-                Card.BitField.Three | Card.BitField.Green | Card.BitField.Solid | Card.BitField.Oval | Card.BitField.MagicOrMask
+                Card.BitField.One | Card.BitField.Red | Card.BitField.Solid | Card.BitField.Oval | Card.MagicOrMask,
+                Card.BitField.Two | Card.BitField.Purple | Card.BitField.Solid | Card.BitField.Oval | Card.MagicOrMask,
+                Card.BitField.Three | Card.BitField.Green | Card.BitField.Solid | Card.BitField.Oval | Card.MagicOrMask
             };
 
             Card.PrintBitFields(bitFields);
 
-            bitFields[0] |= (Card.BitField)(~(UInt32)bitFields[0] >> 4) & Card.BitField.InvertedMask;
-            bitFields[1] |= (Card.BitField)(~(UInt32)bitFields[1] >> 4) & Card.BitField.InvertedMask;
-            bitFields[2] |= (Card.BitField)(~(UInt32)bitFields[2] >> 4) & Card.BitField.InvertedMask;
+            bitFields[0] |= (Card.BitField)(~(UInt32)bitFields[0] >> 4) & Card.InvertedMask;
+            bitFields[1] |= (Card.BitField)(~(UInt32)bitFields[1] >> 4) & Card.InvertedMask;
+            bitFields[2] |= (Card.BitField)(~(UInt32)bitFields[2] >> 4) & Card.InvertedMask;
 
             Card.PrintBitFields(bitFields);
 
-            Console.WriteLine("{0} => {1:G}", "1123", Card.StringToBitField("1123") & Card.BitField.NonInvertedMask);
+            Console.WriteLine("{0} => {1:G}", "1123", Card.StringToBitField("1123") & Card.NonInvertedMask);
 
             Console.WriteLine("{0:G} / {1:G} / {2:G}", bitFields[0], bitFields[1], Card.FindMatch(bitFields));
 
