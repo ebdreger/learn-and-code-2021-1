@@ -46,17 +46,6 @@ namespace learn_and_code
                     ((UInt32)facet == ((UInt32)facet & (UInt32)whichFacet)));
         }
 
-        // special
-        // XXX: BUG - s/public/private/g
-        // XXX: TO DO - refactor in terms of one another
-        public static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
-        public static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
-        public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
-        public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
-        public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
-
-        private static readonly UInt32 FacetBase = 0b__0001_0000;
-
         private Facet _facets; // MUST have four bits set (one for each component facet)
 
         public Card (Facet facets)
@@ -72,6 +61,17 @@ namespace learn_and_code
                          IsValidFacet(shape, WhichFacet.Shape));
             this._facets = quantity | color | shading | shape;
         }
+
+        // special
+        // XXX: BUG - s/public/private/g
+        // XXX: TO DO - refactor in terms of one another
+        public static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
+        public static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
+        public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
+        public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
+        public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
+
+        private static readonly UInt32 FacetBase = 0b__0001_0000;
 
         public static Facet StringToFacet(string input)
         {
