@@ -13,17 +13,6 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
-        public enum WhichFacet : UInt32
-        {
-            Quantity            = 0b__1110_0000__0000_0000__0000_0000__0000_0000,
-            Color               = 0b__0000_0000__1110_0000__0000_0000__0000_0000,
-            Shading             = 0b__0000_0000__0000_0000__1110_0000__0000_0000,
-            Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
-        }
-
-        /// <summary>
-        ///   XXX
-        /// </summary>
         [Flags]
         public enum Facet : UInt32
         {
@@ -52,7 +41,18 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
-        public static Boolean IsValidFacet(Facet facet, WhichFacet whichFacet)
+        private enum WhichFacet : UInt32
+        {
+            Quantity            = 0b__1110_0000__0000_0000__0000_0000__0000_0000,
+            Color               = 0b__0000_0000__1110_0000__0000_0000__0000_0000,
+            Shading             = 0b__0000_0000__0000_0000__1110_0000__0000_0000,
+            Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
+        private static Boolean IsValidFacet(Facet facet, WhichFacet whichFacet)
         {
             return ((1 == BitOperations.PopCount((UInt32)facet)) &&
                     ((UInt32)facet == ((UInt32)facet & (UInt32)whichFacet)));
