@@ -51,9 +51,9 @@ namespace learn_and_code
         public static Boolean IsMatch(BitField[] bitFields)
         {
             Trace.Assert(3 == bitFields.Length);
-            BitField
-                intersection = bitFields[0] & bitFields[1] & bitFields[2],
-                allDifferentCheck = (BitField)(intersection - MagicDelta),
+            UInt32
+                intersection = (UInt32)(bitFields[0] & bitFields[1] & bitFields[2]),
+                allDifferentCheck = intersection - MagicDelta,
                 matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
             Console.WriteLine("{0:x} & {1:x} & {2:x} => i {3:x} => adc {4:x} => match {5:x}",
                               bitFields[0], bitFields[1], bitFields[2],
@@ -61,7 +61,7 @@ namespace learn_and_code
                               allDifferentCheck,
                               matches);
             Console.WriteLine("{0:x} {0:G}", (BitField)matches);
-            return (4 == BitOperations.PopCount((UInt32)matches));
+            return (4 == BitOperations.PopCount(matches));
         }
 
         public static void PrintBitFields(BitField[] bitFields)
@@ -83,7 +83,7 @@ namespace learn_and_code
                 // Console.WriteLine("{0}", ((position -= 8) + c - '0'));
                 result |= (UInt32)1 << ((position -= 8) + c - '0');
             }
-            result |= (~(UInt32)result >> 4) & (UInt32)InvertedMask;
+            result |= (~result >> 4) & InvertedMask;
             return (BitField)result;
         }
     }
