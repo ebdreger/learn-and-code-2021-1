@@ -5,8 +5,14 @@ using System.Numerics;
 
 namespace learn_and_code
 {
+    /// <summary>
+    ///   XXX
+    /// </summary>
     public class Card
     {
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public enum WhichFacet : UInt32
         {
             Quantity            = 0b__1110_0000__0000_0000__0000_0000__0000_0000,
@@ -15,6 +21,9 @@ namespace learn_and_code
             Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         [Flags]
         public enum Facet : UInt32
         {
@@ -40,36 +49,60 @@ namespace learn_and_code
             Diamond             = (DifferentShapes << 3),
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Boolean IsValidFacet(Facet facet, WhichFacet whichFacet)
         {
             return ((1 == BitOperations.PopCount((UInt32)facet)) &&
                     ((UInt32)facet == ((UInt32)facet & (UInt32)whichFacet)));
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Boolean IsValidQuantity(Facet facet)
         {
             return (IsValidFacet(facet, WhichFacet.Quantity));
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Boolean IsValidColor(Facet facet)
         {
             return (IsValidFacet(facet, WhichFacet.Color));
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Boolean IsValidShading(Facet facet)
         {
             return (IsValidFacet(facet, WhichFacet.Shading));
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Boolean IsValidShape(Facet facet)
         {
             return (IsValidFacet(facet, WhichFacet.Shape));
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         private Facet _facets; // MUST have four bits set (one for each component facet)
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         private static readonly UInt32 FacetBaseMask = 0b__1110_0000;
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public Boolean IsValid()
         {
             for (UInt32 mask = FacetBaseMask << 24; 0 != mask; mask >>= 8)
@@ -82,11 +115,17 @@ namespace learn_and_code
             return (4 == BitOperations.PopCount(_facets));
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public Card (Facet facets)
         {
             this._facets = facets;
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public Card (Facet quantity, Facet color, Facet shading, Facet shape)
         {
             Trace.Assert(IsValidQuantity(quantity) &&
@@ -107,6 +146,9 @@ namespace learn_and_code
 
         private static readonly UInt32 FacetBase = 0b__0001_0000;
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Facet StringToFacet(string input)
         {
             // XXX: TO DO - add validity checks
@@ -119,6 +161,9 @@ namespace learn_and_code
             return (Facet)(accumulator ^ (accumulator >> 4) ^ MagicXorMask);
         }
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public Card (string input)
         {
             this._facets = StringToFacet(input);
@@ -126,6 +171,9 @@ namespace learn_and_code
 
         ////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static Facet FindMatch(Facet[] facets)
         {
             // Trace.Assert(2 == facets.Length);
@@ -136,6 +184,9 @@ namespace learn_and_code
         }
 
         public static Boolean IsMatch(Card[] cards)
+        /// <summary>
+        ///   XXX
+        /// </summary>
         {
             Trace.Assert(3 == cards.Length);
             UInt32
