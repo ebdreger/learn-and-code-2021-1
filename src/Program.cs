@@ -76,24 +76,8 @@ namespace learn_and_code
                 intersection = (UInt32)(cards[0].bitField & cards[1].bitField & cards[2].bitField),
                 allDifferentCheck = intersection - MagicDelta,
                 matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
-            Console.WriteLine("{0:x} & {1:x} & {2:x} => i {3:x} => adc {4:x} => match {5:x}",
-                              cards[0].bitField, cards[1].bitField, cards[2].bitField,
-                              intersection,
-                              allDifferentCheck,
-                              matches);
-            Console.WriteLine("{0:x} {0:G}", (BitField)matches);
             return (4 == BitOperations.PopCount(matches));
         }
-
-        // public static void PrintBitFields(BitField[] bitFields)
-        // {
-        //     Trace.Assert(3 == bitFields.Length);
-        //     foreach (BitField bitField in bitFields)
-        //     {
-        //         Console.WriteLine("{0:x} {0:G}", bitField);
-        //     }
-        //     Console.WriteLine("");
-        // }
     }
 
     class Program
