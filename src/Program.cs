@@ -45,14 +45,13 @@ namespace learn_and_code
 
         public static Facet StringToFacet(string input)
         {
-            UInt32 result = 0;
+            UInt32 accumulator = 0;
             foreach (char c in input)
             {
-                result <<= 8;
-                result |= (UInt32)0b__1_0000 << (c - '0');
+                accumulator <<= 8;
+                accumulator |= (UInt32)0b__1_0000 << (c - '0');
             }
-            result ^= (result >> 4) ^ MagicXorMask;
-            return (Facet)result;
+            return (Facet)(accumulator ^ (accumulator >> 4) ^ MagicXorMask);
         }
 
         public Card (string input)
