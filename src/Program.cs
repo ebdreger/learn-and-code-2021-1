@@ -34,6 +34,20 @@ namespace learn_and_code
             Diamond             = (DifferentShapes << 3),
         }
 
+        public enum WhichFacet : UInt32
+        {
+            Quantity = 0b_1110_0000_0000_0000_0000_0000_0000,
+            Color    = 0b_0000_0000_1110_0000_0000_0000_0000,
+            Shading  = 0b_0000_0000_0000_0000_1110_0000_0000,
+            Shape    = 0b_0000_0000_0000_0000_0000_0000_1110,
+        }
+
+        public static Boolean IsValidFacet(Facet facet, WhichFacet whichFacet)
+        {
+            return ((1 == BitOperations.PopCount((UInt32)facet)) &&
+                    ((UInt32)facet == ((UInt32)facet & (UInt32)whichFacet)));
+        }
+
         // special
         // XXX: BUG - s/public/private/g
         // XXX: TO DO - refactor in terms of one another
@@ -43,17 +57,20 @@ namespace learn_and_code
         public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
         public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
 
-        private Facet _facet;
+        private Facet _facets; // MUST have four bits set (one for each component facet)
 
-        public Card (Facet facet)
+        public Card (Facet facets)
         {
-            this._facet = facet;
+            this._facets = facets;
         }
 
         public Card (Facet quantity, Facet color, Facet shading, Facet shape)
         {
-            // XXX: TO DO - validate facets
-            this._facet = quantity | color | shading | shape;
+            Trace.Assert(IsValidFacet(quantity, WhichFacet.Quantity) &&
+                         IsValidFacet(color, WhichFacet.Color) &&
+                         IsValidFacet(shading, WhichFacet.Shading) &&
+                         IsValidFacet(shape, WhichFacet.Shape));
+            this._facets = quantity | color | shading | shape;
         }
 
         public static Facet StringToFacet(string input)
@@ -69,7 +86,7 @@ namespace learn_and_code
 
         public Card (string input)
         {
-            this._facet = StringToFacet(input);
+            this._facets = StringToFacet(input);
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -87,7 +104,7 @@ namespace learn_and_code
         {
             Trace.Assert(3 == cards.Length);
             UInt32
-                intersection = (UInt32)(cards[0]._facet & cards[1]._facet & cards[2]._facet),
+                intersection = (UInt32)(cards[0]._facets & cards[1]._facets & cards[2]._facets),
                 allDifferentCheck = intersection - MagicDelta,
                 matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
             return (4 == BitOperations.PopCount(matches));
@@ -112,4 +129,4 @@ namespace learn_and_code
 
 // XXX: TO DO -
 //
-// - Apply MagicOrMask JIT (not stored in this._facet)
+// - Apply MagicOrMask JIT (not stored in this._facets)
