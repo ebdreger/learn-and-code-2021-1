@@ -105,7 +105,12 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
-        private FacetValue _facetValues; // MUST have four bits set (one for each component facetValue)
+        /// <remarks>
+        ///   <para>
+        ///     <strong>MUST have one bit set per FacetMask group.</strong>
+        ///   </para>
+        /// </remarks>
+        private FacetValue _facetValues;
 
         /// <summary>
         ///   XXX
