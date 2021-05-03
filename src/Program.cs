@@ -7,6 +7,8 @@ namespace learn_and_code
 {
     public class Card
     {
+        private static readonly UInt32 FacetBase = 0b__0001_0000;
+
         [Flags]
         public enum Facet : UInt32
         {
@@ -49,7 +51,7 @@ namespace learn_and_code
             foreach (char c in input)
             {
                 accumulator <<= 8;
-                accumulator |= (UInt32)0b__1_0000 << (c - '0');
+                accumulator |= FacetBase << (c - '0');
             }
             return (Facet)(accumulator ^ (accumulator >> 4) ^ MagicXorMask);
         }
