@@ -8,7 +8,7 @@ namespace learn_and_code
     public class Card
     {
         [Flags]
-        public enum BitField : UInt32
+        public enum Facet : UInt32
         {
             // quantities
             DifferentQuantities = 0b__0001_0000__0000_0000__0000_0000__0000_0000,
@@ -41,9 +41,9 @@ namespace learn_and_code
         public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
         public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
 
-        private BitField bitField;
+        private Facet facet;
 
-        public static BitField StringToBitField(string input)
+        public static Facet StringToFacet(string input)
         {
             UInt32 result = 0;
             foreach (char c in input)
@@ -52,28 +52,28 @@ namespace learn_and_code
                 result |= (UInt32)0b__1_0000 << (c - '0');
             }
             result ^= (result >> 4) ^ MagicXorMask;
-            return (BitField)result;
+            return (Facet)result;
         }
 
         public Card (string input)
         {
-            bitField = StringToBitField(input);
+            facet = StringToFacet(input);
         }
 
-        public static BitField FindMatch(BitField[] bitFields)
+        public static Facet FindMatch(Facet[] facets)
         {
-            // Trace.Assert(2 == bitFields.Length);
+            // Trace.Assert(2 == facets.Length);
             UInt32
-                union = (UInt32)(bitFields[0] | bitFields[1]) & ~MagicOrMask,
+                union = (UInt32)(facets[0] | facets[1]) & ~MagicOrMask,
                 xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
-            return (BitField)((union ^ xorMask) & NonInvertedMask);
+            return (Facet)((union ^ xorMask) & NonInvertedMask);
         }
 
         public static Boolean IsMatch(Card[] cards)
         {
             Trace.Assert(3 == cards.Length);
             UInt32
-                intersection = (UInt32)(cards[0].bitField & cards[1].bitField & cards[2].bitField),
+                intersection = (UInt32)(cards[0].facet & cards[1].facet & cards[2].facet),
                 allDifferentCheck = intersection - MagicDelta,
                 matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
             return (4 == BitOperations.PopCount(matches));
@@ -90,7 +90,7 @@ namespace learn_and_code
                 new Card("3311")
             };
 
-            // Console.WriteLine("{0:G} / {1:G} / {2:G}", bitFields[0], bitFields[1], Card.FindMatch(bitFields));
+            // Console.WriteLine("{0:G} / {1:G} / {2:G}", facets[0], facets[1], Card.FindMatch(facets));
             Console.WriteLine("Match status: {0}", Card.IsMatch(cards));
         }
     }
@@ -98,4 +98,4 @@ namespace learn_and_code
 
 // XXX: TO DO -
 //
-// - Apply MagicOrMask JIT (not stored in this.bitField)
+// - Apply MagicOrMask JIT (not stored in this.facet)
