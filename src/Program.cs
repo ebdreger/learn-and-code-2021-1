@@ -35,21 +35,21 @@ namespace learn_and_code
         // special
         // XXX: BUG - s/public/private/g
         // XXX: TO DO - refactor in terms of one another
-        public static readonly UInt32 MagicXorMask    = 0b__0001_1111__0001_1111__0001_1111__0001_1111;
         public static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
         public static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
         public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
         public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
+        public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
 
         private BitField bitField;
 
         public static BitField StringToBitField(string input)
         {
-            byte position = 36;
             UInt32 result = 0;
             foreach (char c in input)
             {
-                result |= (UInt32)1 << ((position -= 8) + c - '0');
+                result <<= 8;
+                result |= (UInt32)0b__1_0000 << (c - '0');
             }
             result ^= (result >> 4) ^ MagicXorMask;
             return (BitField)result;
