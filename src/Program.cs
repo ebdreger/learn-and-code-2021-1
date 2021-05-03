@@ -77,13 +77,13 @@ namespace learn_and_code
         public static BitField StringToBitField(string input)
         {
             byte position = 36;
-            UInt32 result = MagicOrMask;
+            UInt32 result = 0;
             foreach (char c in input)
             {
                 // Console.WriteLine("{0}", ((position -= 8) + c - '0'));
                 result |= (UInt32)1 << ((position -= 8) + c - '0');
             }
-            result |= (~result >> 4) & InvertedMask;
+            result |= ((~result >> 4) & InvertedMask) | MagicOrMask;
             return (BitField)result;
         }
     }
