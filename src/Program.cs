@@ -75,6 +75,7 @@ namespace learn_and_code
 
         public static Facet StringToFacet(string input)
         {
+            // XXX: TO DO - add validity checks
             UInt32 accumulator = 0;
             foreach (char c in input)
             {
