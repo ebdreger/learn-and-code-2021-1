@@ -44,7 +44,7 @@ namespace learn_and_code
         /// <remarks>
         ///   <para>
         ///     <strong>NOTA BENE:</strong> These masks deliberately exclude the "DifferentFoo"
-        ///     values, as they refer to <em>matches</em> instead of <em>cards</em>.
+        ///     values, as said "DifferentFoo" refer to <em>matches</em> instead of <em>cards</em>.
         ///   </para>
         /// </remarks>
         private enum FacetMask : UInt32
