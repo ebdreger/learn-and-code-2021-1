@@ -72,6 +72,19 @@ namespace learn_and_code
             }
             Console.WriteLine("");
         }
+
+        public static Card StringToCard(string input)
+        {
+            byte position = 36;
+            UInt32 result = (UInt32)Card.MagicOrMask;
+            foreach (char c in input)
+            {
+                // Console.WriteLine("{0}", ((position -= 8) + c - 48));
+                result |= (UInt32)1 << ((position -= 8) + c - 48);
+            }
+            result |= (~(UInt32)result >> 4) & (UInt32)Card.InvertedMask;
+            return (Card)result;
+        }
     }
 
     class Program
@@ -91,6 +104,8 @@ namespace learn_and_code
             cards[2] |= (Card)(~(UInt32)cards[2] >> 4) & Card.InvertedMask;
 
             Fubar.PrintCards(cards);
+
+            Console.WriteLine("{0} => {1:G}", "1123", Fubar.StringToCard("1123") & Card.NonInvertedMask);
 
             Console.WriteLine("{0:G} / {1:G} / {2:G}", cards[0], cards[1], Fubar.FindMatch(cards));
 
