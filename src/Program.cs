@@ -34,6 +34,7 @@ namespace learn_and_code
 
         // special
         // XXX: BUG - s/public/private/g
+        public static readonly UInt32 MagicXorMask    = 0b__0001_1111__0001_1111__0001_1111__0001_1111;
         public static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
         public static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
         public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
@@ -49,8 +50,7 @@ namespace learn_and_code
             {
                 result |= (UInt32)1 << ((position -= 8) + c - '0');
             }
-            result |= ((~result >> 4) & InvertedMask) | MagicOrMask;
-            // result |= (~result >> 4) | MagicOrMask;
+            result ^= (result >> 4) ^ MagicXorMask;
             return (BitField)result;
         }
 
