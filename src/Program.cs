@@ -43,9 +43,8 @@ namespace learn_and_code
         /// </summary>
         /// <remarks>
         ///   <para>
-        ///     <strong>NOTA BENE:</strong> These masks deliberately exclude the
-        ///     "DifferentFoo" values, as they refer to <em>matches</em> instead
-        ///     of <em>cards</em>.
+        ///     <strong>NOTA BENE:</strong> These masks deliberately exclude the "DifferentFoo"
+        ///     values, as they refer to <em>matches</em> instead of <em>cards</em>.
         ///   </para>
         /// </remarks>
         private enum FacetMask : UInt32
@@ -61,10 +60,9 @@ namespace learn_and_code
         /// </summary>
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
-            // NOTA BENE: These typecasts are carefully structured: Were we to
-            // flub a cast and lose precision, the return result would be
-            // "false".  Although there may be confusion around the apparent
-            // error locus -- which most likely would appear to be our caller --
+            // NOTA BENE: These typecasts are carefully structured: Were we to flub a cast and lose
+            // precision, the return result would be "false".  Although there may be confusion
+            // around the apparent error locus -- which most likely would appear to be our caller --
             // this would be preferable to an erroneous "true" return.
             return ((1 == BitOperations.PopCount((UInt32)facetValue)) &&
                     ((UInt32)facetValue == ((UInt32)facetValue & (UInt32)facetMask)));
