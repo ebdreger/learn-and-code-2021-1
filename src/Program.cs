@@ -48,6 +48,20 @@ namespace learn_and_code
 
         private Facet _facets; // MUST have four bits set (one for each component facet)
 
+        private static readonly UInt32 FacetBaseMask = 0b__1110_0000;
+
+        public Boolean IsValid()
+        {
+            for (mask = FaceBaseMask << 24; 0 != mask; mask >>= 8)
+            {
+                if (1 != BitOperations.PopCount(_facets & mask))
+                {
+                    return false;
+                }
+            }
+            return (4 == BitOperations.PopCount(_facets));
+        }
+
         public Card (Facet facets)
         {
             this._facets = facets;
