@@ -72,7 +72,7 @@ namespace learn_and_code
 
         public Boolean IsValid()
         {
-            for (UInt32 mask = FaceBaseMask << 24; 0 != mask; mask >>= 8)
+            for (UInt32 mask = FacetBaseMask << 24; 0 != mask; mask >>= 8)
             {
                 if (1 != BitOperations.PopCount(_facets & mask))
                 {
