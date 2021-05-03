@@ -7,7 +7,13 @@ namespace learn_and_code
 {
     public class Card
     {
-        private static readonly UInt32 FacetBase = 0b__0001_0000;
+        public enum WhichFacet : UInt32
+        {
+            Quantity = 0b__1110_0000__0000_0000__0000_0000__0000_0000,
+            Color    = 0b__0000_0000__1110_0000__0000_0000__0000_0000,
+            Shading  = 0b__0000_0000__0000_0000__1110_0000__0000_0000,
+            Shape    = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
+        }
 
         [Flags]
         public enum Facet : UInt32
@@ -34,14 +40,6 @@ namespace learn_and_code
             Diamond             = (DifferentShapes << 3),
         }
 
-        public enum WhichFacet : UInt32
-        {
-            Quantity = 0b_1110_0000_0000_0000_0000_0000_0000,
-            Color    = 0b_0000_0000_1110_0000_0000_0000_0000,
-            Shading  = 0b_0000_0000_0000_0000_1110_0000_0000,
-            Shape    = 0b_0000_0000_0000_0000_0000_0000_1110,
-        }
-
         public static Boolean IsValidFacet(Facet facet, WhichFacet whichFacet)
         {
             return ((1 == BitOperations.PopCount((UInt32)facet)) &&
@@ -56,6 +54,8 @@ namespace learn_and_code
         public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
         public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
         public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
+
+        private static readonly UInt32 FacetBase = 0b__0001_0000;
 
         private Facet _facets; // MUST have four bits set (one for each component facet)
 
