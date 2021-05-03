@@ -43,7 +43,17 @@ namespace learn_and_code
         public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
         public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
 
-        private Facet facet;
+        private Facet _facet;
+
+        public Card (Facet facet)
+        {
+            this._facet = facet;
+        }
+
+        public Card (Facet quantity, Facet color, Facet shading, Facet shape)
+        {
+            this._facet = quantity | color | shading | shape;
+        }
 
         public static Facet StringToFacet(string input)
         {
@@ -58,8 +68,10 @@ namespace learn_and_code
 
         public Card (string input)
         {
-            facet = StringToFacet(input);
+            this._facet = StringToFacet(input);
         }
+
+        ////////////////////////////////////////////////////////////////////////
 
         public static Facet FindMatch(Facet[] facets)
         {
@@ -74,7 +86,7 @@ namespace learn_and_code
         {
             Trace.Assert(3 == cards.Length);
             UInt32
-                intersection = (UInt32)(cards[0].facet & cards[1].facet & cards[2].facet),
+                intersection = (UInt32)(cards[0]._facet & cards[1]._facet & cards[2]._facet),
                 allDifferentCheck = intersection - MagicDelta,
                 matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
             return (4 == BitOperations.PopCount(matches));
@@ -86,9 +98,9 @@ namespace learn_and_code
         static void Main(string[] args)
         {
             Card[] cards = {
-                new Card("1111"),
-                new Card("2211"),
-                new Card("3311")
+                new Card("1212"),
+                new Card("2311"),
+                new Card("3113")
             };
 
             // Console.WriteLine("{0:G} / {1:G} / {2:G}", facets[0], facets[1], Card.FindMatch(facets));
@@ -99,4 +111,4 @@ namespace learn_and_code
 
 // XXX: TO DO -
 //
-// - Apply MagicOrMask JIT (not stored in this.facet)
+// - Apply MagicOrMask JIT (not stored in this._facet)
