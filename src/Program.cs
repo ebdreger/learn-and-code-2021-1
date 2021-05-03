@@ -46,6 +46,26 @@ namespace learn_and_code
                     ((UInt32)facet == ((UInt32)facet & (UInt32)whichFacet)));
         }
 
+        public static Boolean IsValidQuantity(Facet facet)
+        {
+            return (IsValidFacet(facet, WhichFacet.Quantity));
+        }
+
+        public static Boolean IsValidColor(Facet facet)
+        {
+            return (IsValidFacet(facet, WhichFacet.Color));
+        }
+
+        public static Boolean IsValidShading(Facet facet)
+        {
+            return (IsValidFacet(facet, WhichFacet.Shading));
+        }
+
+        public static Boolean IsValidShape(Facet facet)
+        {
+            return (IsValidFacet(facet, WhichFacet.Shape));
+        }
+
         private Facet _facets; // MUST have four bits set (one for each component facet)
 
         private static readonly UInt32 FacetBaseMask = 0b__1110_0000;
@@ -69,10 +89,10 @@ namespace learn_and_code
 
         public Card (Facet quantity, Facet color, Facet shading, Facet shape)
         {
-            Trace.Assert(IsValidFacet(quantity, WhichFacet.Quantity) &&
-                         IsValidFacet(color, WhichFacet.Color) &&
-                         IsValidFacet(shading, WhichFacet.Shading) &&
-                         IsValidFacet(shape, WhichFacet.Shape));
+            Trace.Assert(IsValidQuantity(quantity) &&
+                         IsValidColor(color) &&
+                         IsValidShading(shading) &&
+                         IsValidShape(shape));
             this._facets = quantity | color | shading | shape;
         }
 
