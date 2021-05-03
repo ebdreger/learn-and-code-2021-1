@@ -124,12 +124,12 @@ namespace learn_and_code
         {
             for (UInt32 mask = FacetValueBaseMask << 24; 0 != mask; mask >>= 8)
             {
-                if (1 != BitOperations.PopCount(_facetValues & mask))
+                if (1 != BitOperations.PopCount((UInt32)this._facetValues & mask))
                 {
                     return false;
                 }
             }
-            return (4 == BitOperations.PopCount(_facetValues));
+            return (4 == BitOperations.PopCount((UInt32)this._facetValues));
         }
 
         /// <summary>
