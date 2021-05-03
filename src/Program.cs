@@ -52,6 +52,7 @@ namespace learn_and_code
 
         public Card (Facet quantity, Facet color, Facet shading, Facet shape)
         {
+            // XXX: TO DO - validate facets
             this._facet = quantity | color | shading | shape;
         }
 
