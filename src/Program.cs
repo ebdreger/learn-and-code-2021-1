@@ -41,10 +41,10 @@ namespace learn_and_code
         public static BitField FindMatch(BitField[] bitFields)
         {
             // Trace.Assert(2 == bitFields.Length);
-            BitField
-                union = (bitFields[0] | bitFields[1]) & ~BitField.MagicOrMask,
-                xorMask = (BitField)((((UInt32)union + (UInt32)BitField.MagicDelta) & (UInt32)BitField.MagicOrMask) * 0b1110);
-            return (union ^ xorMask) & BitField.NonInvertedMask;
+            UInt32
+                union = (UInt32)((bitFields[0] | bitFields[1]) & ~BitField.MagicOrMask),
+                xorMask = (((union + (UInt32)BitField.MagicDelta) & (UInt32)BitField.MagicOrMask) * 0b1110);
+            return (BitField)(union ^ xorMask) & BitField.NonInvertedMask;
         }
 
         public static Boolean IsMatch(BitField[] bitFields)
@@ -79,8 +79,8 @@ namespace learn_and_code
             UInt32 result = (UInt32)BitField.MagicOrMask;
             foreach (char c in input)
             {
-                // Console.WriteLine("{0}", ((position -= 8) + c - 48));
-                result |= (UInt32)1 << ((position -= 8) + c - 48);
+                // Console.WriteLine("{0}", ((position -= 8) + c - '0'));
+                result |= (UInt32)1 << ((position -= 8) + c - '0');
             }
             result |= (~(UInt32)result >> 4) & (UInt32)BitField.InvertedMask;
             return (BitField)result;
