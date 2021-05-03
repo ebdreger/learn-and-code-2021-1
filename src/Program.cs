@@ -115,3 +115,7 @@ namespace learn_and_code
         }
     }
 }
+
+// XXX: TO DO -
+//
+// - Apply MagicOrMask JIT (not stored in this.bitField)
