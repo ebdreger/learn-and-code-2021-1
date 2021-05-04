@@ -187,7 +187,9 @@ namespace learn_and_code
 
             Console.WriteLine("{0:x} -vs- {1:x}",
                               accumulator,
-                              input.ToCharArray().Aggregate(0L, (accumulator, value) => (accumulator << 8) | (UInt32)(1 << (value - '0')), u => u)
+                              input.ToCharArray().Aggregate(0L,
+                                                            (accumulator, value) => (accumulator << 8) | (UInt32)(1 << (value - '0')),
+                                                            u => (u ^ (u >> 4) ^ MagicXorMask))
                               );
 
             return (FacetValue)accumulator;
