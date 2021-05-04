@@ -63,7 +63,7 @@ namespace learn_and_code
 
         public FacetValue GetFacetValues()
         {
-            return (_facetValues);
+            return _facetValues;
         }
 
         #region BitBanging
@@ -84,63 +84,63 @@ namespace learn_and_code
 
         private static UInt32 Mask(UInt32 input, UInt32 andMask, UInt32 xorMask)
         {
-            return ((input & andMask) ^ xorMask);
+            return (input & andMask) ^ xorMask;
         }
 
         private static FacetValue Mask(FacetValue input, FacetMask andMask, FacetMask xorMask)
         {
-            return ((FacetValue)Mask((UInt32)input, (UInt32)andMask, (UInt32)xorMask));
+            return (FacetValue)Mask((UInt32)input, (UInt32)andMask, (UInt32)xorMask);
         }
 
         private static Boolean TestPopCount(UInt32 input, int expectedBitCount)
         {
-            return (BitOperations.PopCount(input) == expectedBitCount);
+            return BitOperations.PopCount(input) == expectedBitCount;
         }
 
         private static Boolean TestPopCount1(UInt32 input)
         {
-            return (TestPopCount(input, 1));
+            return TestPopCount(input, 1);
         }
 
         private static Boolean TestPopCount1(FacetValue input)
         {
-            return (TestPopCount1((UInt32)input));
+            return TestPopCount1((UInt32)input);
         }
 
         private static Boolean TestPopCount4(UInt32 input)
         {
-            return (TestPopCount(input, 4));
+            return TestPopCount(input, 4);
         }
 
         private static Boolean TestPopCount4(FacetValue input)
         {
-            return (TestPopCount4((UInt32)input));
+            return TestPopCount4((UInt32)input);
         }
 
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
-            return (TestPopCount1(facetValue) &&
-                    (0 == Mask(facetValue, facetMask, (FacetMask)facetValue)));
+            return TestPopCount1(facetValue) &&
+                (0 == Mask(facetValue, facetMask, (FacetMask)facetValue));
         }
 
         public static Boolean IsValidQuantity(FacetValue facetValue)
         {
-            return (IsValidFacetValue(facetValue, FacetMask.Quantity));
+            return IsValidFacetValue(facetValue, FacetMask.Quantity);
         }
 
         public static Boolean IsValidColor(FacetValue facetValue)
         {
-            return (IsValidFacetValue(facetValue, FacetMask.Color));
+            return IsValidFacetValue(facetValue, FacetMask.Color);
         }
 
         public static Boolean IsValidShading(FacetValue facetValue)
         {
-            return (IsValidFacetValue(facetValue, FacetMask.Shading));
+            return IsValidFacetValue(facetValue, FacetMask.Shading);
         }
 
         public static Boolean IsValidShape(FacetValue facetValue)
         {
-            return (IsValidFacetValue(facetValue, FacetMask.Shape));
+            return IsValidFacetValue(facetValue, FacetMask.Shape);
         }
 
         private static readonly UInt32 FacetValueBaseMask = 0b__1110_0000;
@@ -154,20 +154,20 @@ namespace learn_and_code
             //     (MagicOrMask | InvertedMask)
             //
             // because it better explains what we are doing?
-            return (Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask));
+            return Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask);
         }
 
         private static UInt32 PrepareFacetsForComparison(FacetValue facets)
         {
-            return (PrepareFacetsForComparison((UInt32)facets));
+            return PrepareFacetsForComparison((UInt32)facets);
         }
 
         public static FacetValue StringToFacetValues(String input)
         {
-            return (input.Aggregate(0U,
-                                    // XXX: TO DO - validate input character "c"
-                                    (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
-                                    u => (FacetValue)u));
+            return input.Aggregate(0U,
+                                   // XXX: TO DO - validate input character "c"
+                                   (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
+                                   u => (FacetValue)u);
         }
 
         #endregion // BitBanging
@@ -182,7 +182,7 @@ namespace learn_and_code
                     return false;
                 }
             }
-            return (TestPopCount4(this._facetValues));
+            return TestPopCount4(this._facetValues);
         }
 
         #region Constructors
@@ -218,7 +218,7 @@ namespace learn_and_code
         //     UInt32
         //         union = (UInt32)(facetValues[0] | facetValues[1]) & ~MagicOrMask,
         //         xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
-        //     return (FacetValue)((union ^ xorMask) & NonInvertedMask);
+        //     return FacetValue((union ^ xorMask) & NonInvertedMask);
         // }
         public FacetValue FindMatch(Card other)
         {
@@ -226,7 +226,7 @@ namespace learn_and_code
                 union = (PrepareFacetsForComparison(this._facetValues) |
                          PrepareFacetsForComparison(other._facetValues)) & ~MagicOrMask,
                 xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
-            return (FacetValue)((union ^ xorMask) & NonInvertedMask);
+            return FacetValue((union ^ xorMask) & NonInvertedMask);
         }
 
         public static Boolean IsMatch(Card[] cards)
@@ -235,7 +235,7 @@ namespace learn_and_code
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
                                              (a, card) => a & PrepareFacetsForComparison(card._facetValues),
                                              intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
-            return (TestPopCount4(matches));
+            return TestPopCount4(matches);
         }
     }
 
