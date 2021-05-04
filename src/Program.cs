@@ -167,32 +167,11 @@ namespace learn_and_code
         /// </summary>
         public static FacetValue StringToFacetValue(string input)
         {
-            // XXX: TO DO - add validity checks
-            UInt32 accumulator = 0;
-            foreach (char c in input)
-            {
-                accumulator <<= 8;
-                accumulator |= FacetValueBase << (c - '0');
-            }
-            accumulator = (accumulator ^ (accumulator >> 4) ^ MagicXorMask);
-            // Trace.Assert(input.Cast<char>().Aggregate<string, UInt32, FacetValue>
-            //              (input,
-            //               (UInt32)0,
-            //               (accumulator, c) => ((accumulator << 8) | (FacetValueBase << (c - '0'))),
-            //               accumulator => (FacetValue)accumulator)
-            //              == accumulator);
-
-            // IEnumerable<UInt32> fubar = input.ToCharArray().Select(c => (UInt32)(c - '0'));
-            // fubar.Aggregate(0L, (accumulator, value) => (accumulator << 8) | (UInt32)value, u => u);
-
-            Console.WriteLine("{0:x} -vs- {1:x}",
-                              accumulator,
-                              input.ToCharArray().Aggregate(0L,
-                                                            (accumulator, value) => (accumulator << 8) | (FacetValueBase << (value - '0')),
-                                                            u => (u ^ (u >> 4) ^ MagicXorMask))
-                              );
-
-            return (FacetValue)accumulator;
+            return input
+                .ToCharArray()
+                .Aggregate(0L,
+                           (a, v) => (a << 8) | (FacetValueBase << (v - '0')),
+                           v => (FacetValue)(v ^ (v >> 4) ^ MagicXorMask));
         }
 
         /// <summary>
