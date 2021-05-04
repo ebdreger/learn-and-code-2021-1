@@ -253,21 +253,9 @@ namespace learn_and_code
         public static Boolean IsMatch(Card[] cards)
         {
             Trace.Assert(3 == cards.Length);
-            UInt32
-                intersection = cards.Aggregate((UInt32)AllOneMask, (a, c) => a & PrepareFacetsForComparison(c._facetValues)),
-                matches = Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask);
-
-            // return 4 ==
-            // cards.Aggregate((UInt32)AllOneMask,
-            //                 (a, v) => {
-            //                     Console.WriteLine("reduce {0:x} {1:x} {2:x} => {3:x}", a, v._facetValues, PrepareFacetsForComparison(v._facetValues), a & PrepareFacetsForComparison(v._facetValues));
-            //                     return a & PrepareFacetsForComparison(v._facetValues);
-            //                 },
-            //                 intersection => {
-            //                     Console.WriteLine("agg {0:x}", ((intersection - MagicDelta) & NonInvertedMask) | MagicOrMask);
-            //                     return ((intersection - MagicDelta) & NonInvertedMask) | MagicOrMask;
-            //                 });
-
+            UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
+                                             (a, card) => a & PrepareFacetsForComparison(card._facetValues),
+                                             intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
             return (4 == BitOperations.PopCount(matches));
         }
     }
