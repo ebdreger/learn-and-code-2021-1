@@ -216,7 +216,7 @@ namespace learn_and_code
                 union = (PrepareFacetsForComparison(this._facetValues) |
                          PrepareFacetsForComparison(other._facetValues)) & ~MagicOrMask,
                 xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
-            return FacetValue((union ^ xorMask) & NonInvertedMask);
+            return (FacetValue)((union ^ xorMask) & NonInvertedMask);
         }
 
         public static Boolean IsMatch(Card[] cards)
