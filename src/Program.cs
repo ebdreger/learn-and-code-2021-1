@@ -8,6 +8,8 @@ namespace learn_and_code
 {
     public class Card
     {
+        #region Enums
+
         /// <summary>
         ///   Magical numbers that, when combined properly, describe any card.
         /// </summary>
@@ -50,12 +52,16 @@ namespace learn_and_code
             Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
         }
 
+        #endregion // Enums
+
         /// <remarks>
         ///   <para>
         ///     <strong>MUST have one bit set per FacetMask group.</strong>
         ///   </para>
         /// </remarks>
         private FacetValue _facetValues;
+
+        #region BitBanging
 
         // special
         // XXX: TO DO - refactor in terms of one another
@@ -125,6 +131,8 @@ namespace learn_and_code
         private static readonly UInt32 FacetValueBaseMask = 0b__1110_0000;
 
         private static FacetMask AllOneMask = ~(FacetMask)0;
+
+        #endregion // BitBanging
 
         public Boolean IsValid()
         {
