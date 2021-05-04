@@ -215,12 +215,8 @@ namespace learn_and_code
     {
         static void Main(String[] args)
         {
-            Card[] cards = (new String[] { "1212", "2311", "3113" }).Select(x => new Card(x)).ToArray();
-            // Card[] cards = {
-            //     new Card("1212"),
-            //     new Card("2311"),
-            //     new Card("3113")
-            // };
+            Card[] cards = (new String[] {"1212", "2311", "3113"})
+                .Select(x => new Card(x)).ToArray();
 
             // Console.WriteLine("{0:G} / {1:G} / {2:G}", facetValues[0], facetValues[1], Card.FindMatch(facetValues));
             Console.WriteLine("Match status: {0}", Card.IsMatch(cards));
