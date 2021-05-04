@@ -167,11 +167,10 @@ namespace learn_and_code
         /// </summary>
         public static FacetValue StringToFacetValue(string input)
         {
-            return input
-                .ToCharArray()
-                .Aggregate(0L,
-                           (a, v) => (a << 8) | (FacetValueBase << (v - '0')),
-                           v => (FacetValue)(v ^ (v >> 4) ^ MagicXorMask));
+            return (input.Aggregate(0UL,
+                                    // XXX: TO DO - validate input character "c"
+                                    (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
+                                    u => (FacetValue)(u ^ (u >> 4) ^ MagicXorMask)));
         }
 
         /// <summary>
