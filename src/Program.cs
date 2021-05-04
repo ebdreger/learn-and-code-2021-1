@@ -167,7 +167,7 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
-        public static FacetValue StringToFacetValue(string input)
+        public static FacetValue StringToFacetValues(string input)
         {
             return (input.Aggregate(0UL,
                                     // XXX: TO DO - validate input character "c"
@@ -180,7 +180,7 @@ namespace learn_and_code
         /// </summary>
         public Card (string input)
         {
-            this._facetValues = StringToFacetValue(input);
+            this._facetValues = StringToFacetValues(input);
         }
 
         ////////////////////////////////////////////////////////////////////////
