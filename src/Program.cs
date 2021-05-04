@@ -256,7 +256,7 @@ namespace learn_and_code
             UInt32
                 intersection = cards.Aggregate((UInt32)AllOneMask, (a, c) => a & PrepareFacetsForComparison(c._facetValues)),
                 allDifferentCheck = intersection - MagicDelta,
-                matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
+                matches = Mask(allDifferentCheck, NonInvertedMask, MagicOrMask);
 
             // return 4 ==
             // cards.Aggregate((UInt32)AllOneMask,
