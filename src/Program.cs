@@ -83,13 +83,33 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
+        private static Boolean TestPopCount(UInt32 input, int expectedBitCount)
+        {
+            return (BitOperations.PopCount(input) == expectedBitCount);
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
+        private static Boolean TestPopCount1(UInt32 input)
+        {
+            return (TestPopCount(input, 1));
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
+        private static Boolean TestPopCount4(UInt32 input)
+        {
+            return (TestPopCount(input, 4));
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
-            // NOTA BENE: These typecasts are carefully structured: Were we to flub a cast and lose
-            // precision, the return result would be "false".  Although there may be confusion
-            // around the apparent error locus -- which most likely would appear to be our caller --
-            // this would be preferable to an erroneous "true" return.
-            return ((1 == BitOperations.PopCount((UInt32)facetValue)) &&
+            return (TestPopCount1((UInt32)facetValue) &&
                     (0 == Mask(facetValue, facetMask, (FacetMask)facetValue)));
         }
 
@@ -148,12 +168,12 @@ namespace learn_and_code
             // XXX: TO DO - "FacetValueBaseMask << 24" is unclean
             for (UInt32 mask = FacetValueBaseMask << 24; 0 != mask; mask >>= 8)
             {
-                if (1 != BitOperations.PopCount((UInt32)Mask(this._facetValues, AllOneMask, (FacetMask)mask)))
+                if (!TestPopCount1((UInt32)Mask(this._facetValues, AllOneMask, (FacetMask)mask)))
                 {
                     return false;
                 }
             }
-            return (4 == BitOperations.PopCount((UInt32)this._facetValues));
+            return (TestPopCount4((UInt32)this._facetValues));
         }
 
         /// <summary>
@@ -256,7 +276,7 @@ namespace learn_and_code
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
                                              (a, card) => a & PrepareFacetsForComparison(card._facetValues),
                                              intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
-            return (4 == BitOperations.PopCount(matches));
+            return (TestPopCount4(matches));
         }
     }
 
