@@ -132,6 +132,29 @@ namespace learn_and_code
 
         private static FacetMask AllOneMask = ~(FacetMask)0;
 
+        private static UInt32 PrepareFacetsForComparison(UInt32 facets)
+        {
+            // Should we move MagicXorMask closer?  Or spell out that we are combining
+            //
+            //     (MagicOrMask | InvertedMask)
+            //
+            // because it better explains what we are doing?
+            return (Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask));
+        }
+
+        private static UInt32 PrepareFacetsForComparison(FacetValue facets)
+        {
+            return (PrepareFacetsForComparison((UInt32)facets));
+        }
+
+        public static FacetValue StringToFacetValues(String input)
+        {
+            return (input.Aggregate(0U,
+                                    // XXX: TO DO - validate input character "c"
+                                    (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
+                                    u => (FacetValue)u));
+        }
+
         #endregion // BitBanging
 
         public Boolean IsValid()
@@ -161,29 +184,6 @@ namespace learn_and_code
                          IsValidShape(shape));
             this._facetValues = quantity | color | shading | shape;
             Debug.Assert(IsValid());
-        }
-
-        private static UInt32 PrepareFacetsForComparison(UInt32 facets)
-        {
-            // Should we move MagicXorMask closer?  Or spell out that we are combining
-            //
-            //     (MagicOrMask | InvertedMask)
-            //
-            // because it better explains what we are doing?
-            return (Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask));
-        }
-
-        private static UInt32 PrepareFacetsForComparison(FacetValue facets)
-        {
-            return (PrepareFacetsForComparison((UInt32)facets));
-        }
-
-        public static FacetValue StringToFacetValues(String input)
-        {
-            return (input.Aggregate(0U,
-                                    // XXX: TO DO - validate input character "c"
-                                    (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
-                                    u => (FacetValue)u));
         }
 
         public Card (String input)
