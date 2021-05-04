@@ -91,9 +91,9 @@ namespace learn_and_code
             return (TestPopCount((UInt32)input, 1));
         }
 
-        private static Boolean TestPopCount4(UInt32 input)
+        private static Boolean TestPopCount4(FacetValue input)
         {
-            return (TestPopCount(input, 4));
+            return (TestPopCount((UInt32)input, 4));
         }
 
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
@@ -136,7 +136,7 @@ namespace learn_and_code
                     return false;
                 }
             }
-            return (TestPopCount4((UInt32)this._facetValues));
+            return (TestPopCount4(this._facetValues));
         }
 
         public Card (FacetValue facetValues)
@@ -203,7 +203,7 @@ namespace learn_and_code
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
                                              (a, card) => a & PrepareFacetsForComparison(card._facetValues),
                                              intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
-            return (TestPopCount4(matches));
+            return (TestPopCount4((FacetValue)matches));
         }
     }
 
