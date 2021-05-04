@@ -199,10 +199,10 @@ namespace learn_and_code
             return (FacetValue)((union ^ xorMask) & NonInvertedMask);
         }
 
-        public static Boolean IsMatch(Card[] cards)
         /// <summary>
         ///   XXX
         /// </summary>
+        public static Boolean IsMatch(Card[] cards)
         {
             Trace.Assert(3 == cards.Length);
             UInt32
