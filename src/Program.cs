@@ -233,19 +233,47 @@ namespace learn_and_code
     {
         static void Main(String[] args)
         {
-            Card[] cards = (new String[] {
-                    "1212",
-                    "2311",
-                    "3113"})
-                .Select(x => new Card(x)).ToArray();
+            Boolean match;
 
-            // foreach (Card card in cards)
-            // {
-            //     Console.WriteLine("card = {0:x}", card.FacetValues());
-            // }
+            static void PrintCards(Card[] cards)
+            {
+                foreach (Card card in cards)
+                {
+                    Console.WriteLine("    {0:G}", card.FacetValues());
+                }
+            }
 
-            // Console.WriteLine("{0:G} / {1:G} / {2:G}", facetValues[0], facetValues[1], Card.FindMatch(facetValues));
-            Console.WriteLine("Match status: {0}", Card.IsMatch(cards));
+            while (true)
+            {
+                Console.WriteLine("What card combination would you like to test?");
+
+                Card[] cards = Console.ReadLine().Split(" ").Select(x => new Card(x)).ToArray();
+
+                Trace.Assert(3 == cards.Length);
+
+                Console.WriteLine("You chose:");
+                PrintCards(cards);
+
+                match = Card.IsMatch(cards);
+                Console.WriteLine("Match status: {0}", match);
+
+                if (!match)
+                {
+                    Console.WriteLine("Ways to make a match:");
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        for (int k = j + 1; k < 3; ++k)
+                        {
+                            Console.WriteLine("  ({0:G}) + ({1:G}) <== ({2:G})",
+                                              cards[j].FacetValues(),
+                                              cards[k].FacetValues(),
+                                              cards[j].FindMatch(cards[k]));
+                        }
+                    }
+                }
+
+                Console.WriteLine("");
+            }
         }
     }
 }
