@@ -92,14 +92,24 @@ namespace learn_and_code
             return (BitOperations.PopCount(input) == expectedBitCount);
         }
 
+        private static Boolean TestPopCount1(UInt32 input)
+        {
+            return (TestPopCount(input, 1));
+        }
+
         private static Boolean TestPopCount1(FacetValue input)
         {
-            return (TestPopCount((UInt32)input, 1));
+            return (TestPopCount1((UInt32)input));
+        }
+
+        private static Boolean TestPopCount4(UInt32 input)
+        {
+            return (TestPopCount(input, 4));
         }
 
         private static Boolean TestPopCount4(FacetValue input)
         {
-            return (TestPopCount((UInt32)input, 4));
+            return (TestPopCount4((UInt32)input));
         }
 
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
@@ -220,7 +230,7 @@ namespace learn_and_code
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
                                              (a, card) => a & PrepareFacetsForComparison(card._facetValues),
                                              intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
-            return (TestPopCount4((FacetValue)matches));
+            return (TestPopCount4(matches));
         }
     }
 
