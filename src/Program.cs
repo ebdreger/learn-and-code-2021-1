@@ -61,6 +61,11 @@ namespace learn_and_code
         /// </remarks>
         private FacetValue _facetValues;
 
+        public FacetValue GetFacetValues()
+        {
+            return (_facetValues);
+        }
+
         #region BitBanging
 
         // special
