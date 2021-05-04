@@ -214,8 +214,7 @@ namespace learn_and_code
             return (input.Aggregate(0U,
                                     // XXX: TO DO - validate input character "c"
                                     (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
-                                    // XXX: TO DO - no transforms beyond typecast / bit-bang elsewhere
-                                    u => (FacetValue)PrepareFacetsForComparison(u)));
+                                    u => (FacetValue)u));
         }
 
         /// <summary>
