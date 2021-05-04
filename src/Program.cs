@@ -167,7 +167,7 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
-        public static FacetValue StringToFacetValues(string input)
+        public static FacetValue StringToFacetValues(String input)
         {
             return (input.Aggregate(0UL,
                                     // XXX: TO DO - validate input character "c"
@@ -178,7 +178,7 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
-        public Card (string input)
+        public Card (String input)
         {
             this._facetValues = StringToFacetValues(input);
         }
@@ -213,8 +213,9 @@ namespace learn_and_code
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main(String[] args)
         {
+            // Card[] cards = { "1212", "2311", "3113" }.Select(x => new Card(x));
             Card[] cards = {
                 new Card("1212"),
                 new Card("2311"),
