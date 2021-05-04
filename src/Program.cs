@@ -210,16 +210,6 @@ namespace learn_and_code
 
         #endregion // Constructors
 
-        ////////////////////////////////////////////////////////////////////////
-
-        // public static FacetValue FindMatch(FacetValue[] facetValues)
-        // {
-        //     // Trace.Assert(2 == facetValues.Length);
-        //     UInt32
-        //         union = (UInt32)(facetValues[0] | facetValues[1]) & ~MagicOrMask,
-        //         xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
-        //     return FacetValue((union ^ xorMask) & NonInvertedMask);
-        // }
         public FacetValue FindMatch(Card other)
         {
             UInt32
