@@ -65,6 +65,22 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
+        private static UInt32 Mask(UInt32 input, UInt32 andMask, UInt32 xorMask)
+        {
+            return ((input & andMask) ^ xorMask);
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
+        private static FacetValue Mask(FacetValue input, FacetMask andMask, FacetMask xorMask)
+        {
+            return ((FacetValue)Mask((UInt32)input, (UInt32)andMask, (UInt32)xorMask));
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
             // NOTA BENE: These typecasts are carefully structured: Were we to flub a cast and lose
@@ -72,7 +88,7 @@ namespace learn_and_code
             // around the apparent error locus -- which most likely would appear to be our caller --
             // this would be preferable to an erroneous "true" return.
             return ((1 == BitOperations.PopCount((UInt32)facetValue)) &&
-                    ((UInt32)facetValue == ((UInt32)facetValue & (UInt32)facetMask)));
+                    (0 == Mask(facetValue, facetMask, (FacetMask)facetValue)));
         }
 
         /// <summary>
