@@ -56,6 +56,8 @@ namespace learn_and_code
             Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
         }
 
+        private static FacetMask AllOneMask = ~(FacetMask)0;
+
         /// <summary>
         ///   XXX
         /// </summary>
@@ -146,7 +148,7 @@ namespace learn_and_code
             // XXX: TO DO - "FacetValueBaseMask << 24" is unclean
             for (UInt32 mask = FacetValueBaseMask << 24; 0 != mask; mask >>= 8)
             {
-                if (1 != BitOperations.PopCount((UInt32)this._facetValues & mask))
+                if (1 != BitOperations.PopCount((UInt32)Mask(this._facetValues, AllOneMask, (FacetMask)mask)))
                 {
                     return false;
                 }
@@ -193,7 +195,7 @@ namespace learn_and_code
         /// </summary>
         private static UInt32 PrepareFacetsForComparison(UInt32 facets)
         {
-            return (facets ^ (facets >> 4) ^ MagicXorMask);
+            return (Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask));
         }
 
         /// <summary>
@@ -258,7 +260,7 @@ namespace learn_and_code
             //     matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
 
             return 4 ==
-            cards.Aggregate(~0U,
+            cards.Aggregate((UInt32)AllOneMask,
                             (a, v) => {
                                 Console.WriteLine("{0:x} {1:x} {2:x}", a, v._facetValues, PrepareFacetsForComparison(v._facetValues));
                                 return a & PrepareFacetsForComparison(v._facetValues);
