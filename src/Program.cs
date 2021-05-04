@@ -59,6 +59,12 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
+        // XXX: TO DO
+        // private delegate UInt32 MaskDelegate(UInt32 andMask, UInt32 xorMask);
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
             // NOTA BENE: These typecasts are carefully structured: Were we to flub a cast and lose
