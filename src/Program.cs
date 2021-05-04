@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 
 namespace learn_and_code
@@ -173,7 +174,23 @@ namespace learn_and_code
                 accumulator <<= 8;
                 accumulator |= FacetValueBase << (c - '0');
             }
-            return (FacetValue)(accumulator ^ (accumulator >> 4) ^ MagicXorMask);
+            accumulator = (accumulator ^ (accumulator >> 4) ^ MagicXorMask);
+            // Trace.Assert(input.Cast<char>().Aggregate<string, UInt32, FacetValue>
+            //              (input,
+            //               (UInt32)0,
+            //               (accumulator, c) => ((accumulator << 8) | (FacetValueBase << (c - '0'))),
+            //               accumulator => (FacetValue)accumulator)
+            //              == accumulator);
+
+            // IEnumerable<UInt32> fubar = input.ToCharArray().Select(c => (UInt32)(c - '0'));
+            // fubar.Aggregate(0L, (accumulator, value) => (accumulator << 8) | (UInt32)value, u => u);
+
+            Console.WriteLine("{0:x} -vs- {1:x}",
+                              accumulator,
+                              input.ToCharArray().Aggregate(0L, (accumulator, value) => (accumulator << 8) | (UInt32)(1 << (value - '0')), u => u)
+                              );
+
+            return (FacetValue)accumulator;
         }
 
         /// <summary>
