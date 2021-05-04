@@ -121,6 +121,7 @@ namespace learn_and_code
         /// </summary>
         public Boolean IsValid()
         {
+            // XXX: TO DO - "FacetValueBaseMask << 24" is unclean
             for (UInt32 mask = FacetValueBaseMask << 24; 0 != mask; mask >>= 8)
             {
                 if (1 != BitOperations.PopCount((UInt32)this._facetValues & mask))
