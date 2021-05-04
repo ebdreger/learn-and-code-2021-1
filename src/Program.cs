@@ -157,6 +157,11 @@ namespace learn_and_code
 
         private static UInt32 PrepareFacetsForComparison(UInt32 facets)
         {
+            // Should we move MagicXorMask closer?  Or spell out that we are combining
+            //
+            //     (MagicOrMask | InvertedMask)
+            //
+            // because it better explains what we are doing?
             return (Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask));
         }
 
