@@ -169,13 +169,29 @@ namespace learn_and_code
         /// <summary>
         ///   XXX
         /// </summary>
+        private static UInt32 PrepareFacetsForComparison(UInt32 facets)
+        {
+            return (facets ^ (facets >> 4) ^ MagicXorMask);
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
+        private static UInt32 PrepareFacetsForComparison(FacetValue facets)
+        {
+            return (PrepareFacetsForComparison((UInt32)facets));
+        }
+
+        /// <summary>
+        ///   XXX
+        /// </summary>
         public static FacetValue StringToFacetValues(String input)
         {
-            return (input.Aggregate(0UL,
+            return (input.Aggregate(0U,
                                     // XXX: TO DO - validate input character "c"
                                     (a, c) => (a << 8) | (FacetValueBase << (int)(c - '0')),
                                     // XXX: TO DO - no transforms beyond typecast / bit-bang elsewhere
-                                    u => (FacetValue)(u ^ (u >> 4) ^ MagicXorMask)));
+                                    u => (FacetValue)PrepareFacetsForComparison(u)));
         }
 
         /// <summary>
