@@ -253,23 +253,25 @@ namespace learn_and_code
         public static Boolean IsMatch(Card[] cards)
         {
             Trace.Assert(3 == cards.Length);
-            // UInt32
-            //     intersection = (UInt32)(cards[0]._facetValues & cards[1]._facetValues & cards[2]._facetValues),
-            //     allDifferentCheck = intersection - MagicDelta,
-            //     matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
+            UInt32
+                intersection = (UInt32)(PrepareFacetsForComparison(cards[0]._facetValues) &
+                                        PrepareFacetsForComparison(cards[1]._facetValues) &
+                                        PrepareFacetsForComparison(cards[2]._facetValues)),
+                allDifferentCheck = intersection - MagicDelta,
+                matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
 
-            return 4 ==
-            cards.Aggregate((UInt32)AllOneMask,
-                            (a, v) => {
-                                Console.WriteLine("{0:x} {1:x} {2:x}", a, v._facetValues, PrepareFacetsForComparison(v._facetValues));
-                                return a & PrepareFacetsForComparison(v._facetValues);
-                            },
-                            intersection => {
-                                Console.WriteLine("{0:x}", ((intersection - MagicDelta) & NonInvertedMask) | MagicOrMask);
-                                return ((intersection - MagicDelta) & NonInvertedMask) | MagicOrMask;
-                            });
+            // return 4 ==
+            // cards.Aggregate((UInt32)AllOneMask,
+            //                 (a, v) => {
+            //                     Console.WriteLine("reduce {0:x} {1:x} {2:x} => {3:x}", a, v._facetValues, PrepareFacetsForComparison(v._facetValues), a & PrepareFacetsForComparison(v._facetValues));
+            //                     return a & PrepareFacetsForComparison(v._facetValues);
+            //                 },
+            //                 intersection => {
+            //                     Console.WriteLine("agg {0:x}", ((intersection - MagicDelta) & NonInvertedMask) | MagicOrMask);
+            //                     return ((intersection - MagicDelta) & NonInvertedMask) | MagicOrMask;
+            //                 });
 
-            // return (4 == BitOperations.PopCount(matches));
+            return (4 == BitOperations.PopCount(matches));
         }
     }
 
