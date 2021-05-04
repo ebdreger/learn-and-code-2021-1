@@ -61,7 +61,7 @@ namespace learn_and_code
         /// </remarks>
         private FacetValue _facetValues;
 
-        public FacetValue GetFacetValues()
+        public FacetValue FacetValues()
         {
             return _facetValues;
         }
@@ -177,12 +177,12 @@ namespace learn_and_code
             // XXX: TO DO - "FacetValueBaseMask << 24" is unclean
             for (UInt32 mask = FacetValueBaseMask << 24; 0 != mask; mask >>= 8)
             {
-                if (!TestPopCount1(Mask(this._facetValues, AllOneMask, (FacetMask)mask)))
+                if (!TestPopCount1(Mask(FacetValues(), AllOneMask, (FacetMask)mask)))
                 {
                     return false;
                 }
             }
-            return TestPopCount4(this._facetValues);
+            return TestPopCount4(FacetValues());
         }
 
         #region Constructors
@@ -213,8 +213,8 @@ namespace learn_and_code
         public FacetValue FindMatch(Card other)
         {
             UInt32
-                union = (PrepareFacetsForComparison(this._facetValues) |
-                         PrepareFacetsForComparison(other._facetValues)) & ~MagicOrMask,
+                union = (PrepareFacetsForComparison(FacetValues()) |
+                         PrepareFacetsForComparison(other.FacetValues())) & ~MagicOrMask,
                 xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
             return (FacetValue)((union ^ xorMask) & NonInvertedMask);
         }
@@ -223,7 +223,7 @@ namespace learn_and_code
         {
             Trace.Assert(3 == cards.Length);
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
-                                             (a, card) => a & PrepareFacetsForComparison(card._facetValues),
+                                             (a, card) => a & PrepareFacetsForComparison(card.FacetValues()),
                                              intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
             return TestPopCount4(matches);
         }
@@ -241,7 +241,7 @@ namespace learn_and_code
 
             // foreach (Card card in cards)
             // {
-            //     Console.WriteLine("card = {0:x}", card._facetValues);
+            //     Console.WriteLine("card = {0:x}", card.FacetValues());
             // }
 
             // Console.WriteLine("{0:G} / {1:G} / {2:G}", facetValues[0], facetValues[1], Card.FindMatch(facetValues));
