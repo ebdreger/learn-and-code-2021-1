@@ -50,7 +50,24 @@ namespace learn_and_code
             Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
         }
 
-        private static FacetMask AllOneMask = ~(FacetMask)0;
+        /// <remarks>
+        ///   <para>
+        ///     <strong>MUST have one bit set per FacetMask group.</strong>
+        ///   </para>
+        /// </remarks>
+        private FacetValue _facetValues;
+
+        // special
+        // XXX: BUG - s/public/private/g
+        // XXX: TO DO - refactor in terms of one another
+        // XXX: TO DO - once below "MagicXorMask" is factored elsewhere, relocate these declarations to be ALAP
+        public static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
+        public static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
+        public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
+        public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
+        public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
+
+        private static readonly UInt32 FacetValueBase = 0b__0001_0000;
 
         // XXX: TO DO
         // private delegate UInt32 MaskDelegate(UInt32 andMask, UInt32 xorMask);
@@ -106,14 +123,9 @@ namespace learn_and_code
             return (IsValidFacetValue(facetValue, FacetMask.Shape));
         }
 
-        /// <remarks>
-        ///   <para>
-        ///     <strong>MUST have one bit set per FacetMask group.</strong>
-        ///   </para>
-        /// </remarks>
-        private FacetValue _facetValues;
-
         private static readonly UInt32 FacetValueBaseMask = 0b__1110_0000;
+
+        private static FacetMask AllOneMask = ~(FacetMask)0;
 
         public Boolean IsValid()
         {
@@ -143,18 +155,6 @@ namespace learn_and_code
             this._facetValues = quantity | color | shading | shape;
             Debug.Assert(IsValid());
         }
-
-        // special
-        // XXX: BUG - s/public/private/g
-        // XXX: TO DO - refactor in terms of one another
-        // XXX: TO DO - once below "MagicXorMask" is factored elsewhere, relocate these declarations to be ALAP
-        public static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
-        public static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
-        public static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
-        public static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
-        public static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
-
-        private static readonly UInt32 FacetValueBase = 0b__0001_0000;
 
         private static UInt32 PrepareFacetsForComparison(UInt32 facets)
         {
