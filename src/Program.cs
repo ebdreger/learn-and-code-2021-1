@@ -70,9 +70,9 @@ namespace learn_and_code
             return (BitOperations.PopCount(input) == expectedBitCount);
         }
 
-        private static Boolean TestPopCount1(UInt32 input)
+        private static Boolean TestPopCount1(FacetValue input)
         {
-            return (TestPopCount(input, 1));
+            return (TestPopCount((UInt32)input, 1));
         }
 
         private static Boolean TestPopCount4(UInt32 input)
@@ -82,7 +82,7 @@ namespace learn_and_code
 
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
-            return (TestPopCount1((UInt32)facetValue) &&
+            return (TestPopCount1(facetValue) &&
                     (0 == Mask(facetValue, facetMask, (FacetMask)facetValue)));
         }
 
@@ -120,7 +120,7 @@ namespace learn_and_code
             // XXX: TO DO - "FacetValueBaseMask << 24" is unclean
             for (UInt32 mask = FacetValueBaseMask << 24; 0 != mask; mask >>= 8)
             {
-                if (!TestPopCount1((UInt32)Mask(this._facetValues, AllOneMask, (FacetMask)mask)))
+                if (!TestPopCount1(Mask(this._facetValues, AllOneMask, (FacetMask)mask)))
                 {
                     return false;
                 }
