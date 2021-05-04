@@ -254,9 +254,7 @@ namespace learn_and_code
         {
             Trace.Assert(3 == cards.Length);
             UInt32
-                intersection = (UInt32)(PrepareFacetsForComparison(cards[0]._facetValues) &
-                                        PrepareFacetsForComparison(cards[1]._facetValues) &
-                                        PrepareFacetsForComparison(cards[2]._facetValues)),
+                intersection = cards.Aggregate((UInt32)AllOneMask, (a, c) => a & PrepareFacetsForComparison(c._facetValues)),
                 allDifferentCheck = intersection - MagicDelta,
                 matches = (allDifferentCheck & NonInvertedMask) ^ MagicOrMask;
 
