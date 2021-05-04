@@ -138,6 +138,7 @@ namespace learn_and_code
         public Card (FacetValue facetValues)
         {
             this._facetValues = facetValues;
+            Debug.Assert(IsValid());
         }
 
         /// <summary>
