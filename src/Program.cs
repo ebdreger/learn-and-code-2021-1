@@ -170,6 +170,8 @@ namespace learn_and_code
             return (TestPopCount4(this._facetValues));
         }
 
+        #region Constructors
+
         public Card (FacetValue facetValues)
         {
             this._facetValues = facetValues;
@@ -190,6 +192,8 @@ namespace learn_and_code
         {
             this._facetValues = StringToFacetValues(input);
         }
+
+        #endregion // Constructors
 
         ////////////////////////////////////////////////////////////////////////
 
