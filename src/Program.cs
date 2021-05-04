@@ -150,6 +150,7 @@ namespace learn_and_code
                          IsValidShading(shading) &&
                          IsValidShape(shape));
             this._facetValues = quantity | color | shading | shape;
+            Debug.Assert(IsValid());
         }
 
         // special
