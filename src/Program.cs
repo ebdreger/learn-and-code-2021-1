@@ -6,9 +6,6 @@ using System.Numerics;
 
 namespace learn_and_code
 {
-    /// <summary>
-    ///   XXX
-    /// </summary>
     public class Card
     {
         /// <summary>
@@ -39,9 +36,6 @@ namespace learn_and_code
             Diamond             = (DifferentShapes << 3),
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         /// <remarks>
         ///   <para>
         ///     <strong>NOTA BENE:</strong> These masks deliberately exclude the "DifferentFoo"
@@ -58,96 +52,60 @@ namespace learn_and_code
 
         private static FacetMask AllOneMask = ~(FacetMask)0;
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         // XXX: TO DO
         // private delegate UInt32 MaskDelegate(UInt32 andMask, UInt32 xorMask);
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static UInt32 Mask(UInt32 input, UInt32 andMask, UInt32 xorMask)
         {
             return ((input & andMask) ^ xorMask);
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static FacetValue Mask(FacetValue input, FacetMask andMask, FacetMask xorMask)
         {
             return ((FacetValue)Mask((UInt32)input, (UInt32)andMask, (UInt32)xorMask));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static Boolean TestPopCount(UInt32 input, int expectedBitCount)
         {
             return (BitOperations.PopCount(input) == expectedBitCount);
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static Boolean TestPopCount1(UInt32 input)
         {
             return (TestPopCount(input, 1));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static Boolean TestPopCount4(UInt32 input)
         {
             return (TestPopCount(input, 4));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static Boolean IsValidFacetValue(FacetValue facetValue, FacetMask facetMask)
         {
             return (TestPopCount1((UInt32)facetValue) &&
                     (0 == Mask(facetValue, facetMask, (FacetMask)facetValue)));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public static Boolean IsValidQuantity(FacetValue facetValue)
         {
             return (IsValidFacetValue(facetValue, FacetMask.Quantity));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public static Boolean IsValidColor(FacetValue facetValue)
         {
             return (IsValidFacetValue(facetValue, FacetMask.Color));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public static Boolean IsValidShading(FacetValue facetValue)
         {
             return (IsValidFacetValue(facetValue, FacetMask.Shading));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public static Boolean IsValidShape(FacetValue facetValue)
         {
             return (IsValidFacetValue(facetValue, FacetMask.Shape));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         /// <remarks>
         ///   <para>
         ///     <strong>MUST have one bit set per FacetMask group.</strong>
@@ -155,14 +113,8 @@ namespace learn_and_code
         /// </remarks>
         private FacetValue _facetValues;
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static readonly UInt32 FacetValueBaseMask = 0b__1110_0000;
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public Boolean IsValid()
         {
             // XXX: TO DO - "FacetValueBaseMask << 24" is unclean
@@ -176,18 +128,12 @@ namespace learn_and_code
             return (TestPopCount4((UInt32)this._facetValues));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public Card (FacetValue facetValues)
         {
             this._facetValues = facetValues;
             Debug.Assert(IsValid());
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public Card (FacetValue quantity, FacetValue color, FacetValue shading, FacetValue shape)
         {
             Trace.Assert(IsValidQuantity(quantity) &&
@@ -210,25 +156,16 @@ namespace learn_and_code
 
         private static readonly UInt32 FacetValueBase = 0b__0001_0000;
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static UInt32 PrepareFacetsForComparison(UInt32 facets)
         {
             return (Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         private static UInt32 PrepareFacetsForComparison(FacetValue facets)
         {
             return (PrepareFacetsForComparison((UInt32)facets));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public static FacetValue StringToFacetValues(String input)
         {
             return (input.Aggregate(0U,
@@ -237,9 +174,6 @@ namespace learn_and_code
                                     u => (FacetValue)u));
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public Card (String input)
         {
             this._facetValues = StringToFacetValues(input);
@@ -247,9 +181,6 @@ namespace learn_and_code
 
         ////////////////////////////////////////////////////////////////////////
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         // public static FacetValue FindMatch(FacetValue[] facetValues)
         // {
         //     // Trace.Assert(2 == facetValues.Length);
@@ -267,9 +198,6 @@ namespace learn_and_code
             return (FacetValue)((union ^ xorMask) & NonInvertedMask);
         }
 
-        /// <summary>
-        ///   XXX
-        /// </summary>
         public static Boolean IsMatch(Card[] cards)
         {
             Trace.Assert(3 == cards.Length);
