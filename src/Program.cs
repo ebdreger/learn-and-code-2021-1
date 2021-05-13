@@ -145,7 +145,7 @@ namespace learn_and_code
 
         private static readonly UInt32 FacetValueBaseMask = 0b__1110_0000;
 
-        private static FacetMask AllOneMask = ~(FacetMask)0;
+        private static readonly FacetMask AllOneMask = ~(FacetMask)0;
 
         private static UInt32 PrepareFacetsForComparison(UInt32 facets)
         {
