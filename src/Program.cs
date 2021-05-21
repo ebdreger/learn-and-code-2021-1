@@ -6,6 +6,10 @@ using System.Numerics;
 
 namespace learn_and_code
 {
+    internal class Bonus
+    {
+    }
+
     public class Card
     {
         #region Enums
