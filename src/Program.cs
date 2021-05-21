@@ -3,11 +3,37 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using static System.Runtime.Intrinsics.X86.Bmi2;
+using System.Text;
 
 namespace learn_and_code
 {
     internal class Bonus
     {
+        private static Int32[] _uint32ByteShift = { 24, 16, 8, 0 };
+
+        /// <summary>
+        ///   Format a UInt32 as a nybble-separated value.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     AFAICT, .NET lacks a built-in way to do this.  I didn't write this for readability,
+        ///     but am happy to explain it if anyone likes.  Feel free just to use it as a black
+        ///     box.
+        ///   </para>
+        /// </remarks>
+        public static String FormatBinary(UInt32 value)
+        {
+            StringBuilder sb = new StringBuilder("0b", 46);
+            foreach (Int32 shift in _uint32ByteShift)
+            {
+                UInt32 u = ((value >> shift) & 0xff);
+                u = ParallelBitDeposit(u, 0x5555);
+                u = ParallelBitDeposit(u, 0x55555555);
+                sb.AppendFormat("__{0:X4}_{1:X4}", (int)(u >> 16), (int)(u & 0xffff));
+            }
+            return sb.ToString();
+        }
     }
 
     public class Card
