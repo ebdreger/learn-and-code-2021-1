@@ -93,6 +93,9 @@ namespace learn_and_code
 
         public FacetValue FacetValues()
         {
+            Console.WriteLine("");
+            Console.WriteLine("       [Quantity.][Color....][Shading..][Shape....]");
+            Console.WriteLine("    {0} <== 0x{1:X8} <== FacetValues()", Bonus.FormatBinary((UInt32)_facetValues), (UInt32)_facetValues);
             return _facetValues;
         }
 
@@ -114,6 +117,16 @@ namespace learn_and_code
 
         private static UInt32 Mask(UInt32 input, UInt32 andMask, UInt32 xorMask)
         {
+            Console.WriteLine("");
+            Console.WriteLine("  <<< Mask() call start");
+            Console.ReadLine();
+            Console.WriteLine("    {0} <== Mask input", Bonus.FormatBinary(input));
+            Console.WriteLine("    {0} <== Mask andMask", Bonus.FormatBinary(andMask));
+            Console.WriteLine("    {0} <== Mask xorMask", Bonus.FormatBinary(xorMask));
+            Console.WriteLine("    {0} <== Mask result", Bonus.FormatBinary((input & andMask) ^ xorMask));
+            Console.WriteLine("  >>> Mask() call finish");
+            Console.ReadLine();
+            Console.WriteLine("");
             return (input & andMask) ^ xorMask;
         }
 
@@ -124,6 +137,14 @@ namespace learn_and_code
 
         private static Boolean TestPopCount(UInt32 input, int expectedBitCount)
         {
+            Console.WriteLine("");
+            Console.WriteLine("  <<< TestPopCount() call start");
+            Console.ReadLine();
+            Console.WriteLine("       [Quantity.][Color....][Shading..][Shape....]");
+            Console.WriteLine("    {0} <== TestPopCount gives {1} (we wanted {2})", Bonus.FormatBinary(input), BitOperations.PopCount(input), expectedBitCount);
+            Console.WriteLine("  <<< TestPopCount() call finish");
+            Console.ReadLine();
+            Console.WriteLine("");
             return BitOperations.PopCount(input) == expectedBitCount;
         }
 
@@ -184,7 +205,17 @@ namespace learn_and_code
             //     (MagicOrMask | InvertedMask)
             //
             // because it better explains what we are doing?
+            Console.WriteLine("");
+            Console.WriteLine("  <<< PrepareFacetsForComparison() call start");
+            Console.ReadLine();
+            Console.WriteLine("    {0} <== (facets                )", Bonus.FormatBinary(facets));
+            Console.WriteLine("    {0} <== (         (facets >> 4))", Bonus.FormatBinary((facets >> 4)));
+            Console.WriteLine("    {0} <== (facets ^ (facets >> 4))", Bonus.FormatBinary(facets ^ (facets >> 4)));
             UInt32 result = Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask);
+            Console.WriteLine("    {1} <== PrepareFacetsForComparison({0}) result", Bonus.FormatBinary(facets), Bonus.FormatBinary(result));
+            Console.WriteLine("  >>> PrepareFacetsForComparison() call finish");
+            Console.ReadLine();
+            Console.WriteLine("");
             return result;
         }
 
@@ -243,32 +274,75 @@ namespace learn_and_code
 
         public FacetValue FindMatch(Card other)
         {
+            Console.WriteLine("");
+            Console.WriteLine("  <<< FindMatch() call start");
+            Console.ReadLine();
             UInt32 oursBeforePrep = (UInt32)FacetValues();
             UInt32 theirsBeforePrep = (UInt32)other.FacetValues();
             UInt32 ours = PrepareFacetsForComparison(oursBeforePrep);
             UInt32 theirs = PrepareFacetsForComparison(theirsBeforePrep);
+            Console.WriteLine("  ...back to the task at hand...");
+            Console.WriteLine("    {0} <== (First         )                {1:G}", Bonus.FormatBinary(ours), (FacetValue)oursBeforePrep);
+            Console.WriteLine("    {0} <== (        Second)                {1:G}", Bonus.FormatBinary(theirs), (FacetValue)theirsBeforePrep);
+            Console.WriteLine("    {0} <== (First | Second)               ", Bonus.FormatBinary(ours | theirs));
+            Console.WriteLine("");
+            Console.WriteLine("    {0} <==                    ~MagicOrMask", Bonus.FormatBinary(~MagicOrMask));
             UInt32 union = (ours | theirs) & ~MagicOrMask;
+            Console.WriteLine("    {0} <== (First | Second) & ~MagicOrMask // let's call it \"union\"", Bonus.FormatBinary(union));
+            Console.WriteLine("");
+            Console.WriteLine("    {0} <== ((        MagicDelta)              )", Bonus.FormatBinary(MagicDelta));
+            Console.WriteLine("    {0} <== ((union + MagicDelta)              )", Bonus.FormatBinary(union + MagicDelta));
+            Console.WriteLine("    {0} <== (                       MagicOrMask)", Bonus.FormatBinary(MagicOrMask));
+            Console.WriteLine("    {0} <== ((union + MagicDelta) & MagicOrMask)", Bonus.FormatBinary((union + MagicDelta) & MagicOrMask));
             UInt32 xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
+            Console.WriteLine("    {0} <== ((union + MagicDelta) & MagicOrMask) * 0b1110 // let's call it \"xorMask\"", Bonus.FormatBinary(xorMask));
+            Console.WriteLine("");
+            Console.WriteLine("    {0} <== (union          )                    // from above", Bonus.FormatBinary(union));
+            Console.WriteLine("    {0} <== (        xorMask)                    // from above", Bonus.FormatBinary(xorMask));
+            Console.WriteLine("    {0} <== (union ^ xorMask)", Bonus.FormatBinary(union ^ xorMask));
+            Console.WriteLine("    {0} <==                     NonInvertedMask", Bonus.FormatBinary(NonInvertedMask));
             UInt32 result = ((union ^ xorMask) & NonInvertedMask);
+            Console.WriteLine("       [Quantity.][Color....][Shading..][Shape....]");
+            Console.WriteLine("    {0} <== (union ^ xorMask) & NonInvertedMask <== result", Bonus.FormatBinary(result));
+            Console.WriteLine("    {0:G}", (FacetValue)result);
+            Console.WriteLine("  >>> FindMatch() call finish");
+            Console.WriteLine("");
+            Console.ReadLine();
             return (FacetValue)result;
         }
 
         public static Boolean IsMatch(Card[] cards)
         {
+            Console.WriteLine("");
+            Console.WriteLine("  <<< IsMatch() call start");
+            Console.ReadLine();
             Trace.Assert(3 == cards.Length);
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
                                              (a, card) => {
+                                                 Console.WriteLine("    ...next card...");
                                                  FacetValue facetValuesBeforePrep = card.FacetValues();
                                                  UInt32 facetValues = PrepareFacetsForComparison(facetValuesBeforePrep);
                                                  UInt32 result = a & facetValues;
+                                                 Console.WriteLine("    {0} <==  facetValuesBeforePrep", Bonus.FormatBinary((UInt32)facetValuesBeforePrep));
+                                                 Console.WriteLine("    {0} <== (facetValues              )", Bonus.FormatBinary(facetValues));
+                                                 Console.WriteLine("    {0} <==              & accumulator", Bonus.FormatBinary(a));
+                                                 Console.WriteLine("    {0} <== (facetValues & accumulator) <== new accumulator value", Bonus.FormatBinary(result));
                                                  return result;
                                              },
                                              intersection => {
+                                                 Console.WriteLine("    {0} <== (intersection             )", Bonus.FormatBinary(intersection));
+                                                 Console.WriteLine("    {0} <== (               MagicDelta)", Bonus.FormatBinary(MagicDelta));
                                                  UInt32 difference = intersection - MagicDelta;
+                                                 Console.WriteLine("    {0} <== (intersection - MagicDelta)", Bonus.FormatBinary(difference));
+                                                 Console.WriteLine("    {0} <== NonInvertedMask for AND", Bonus.FormatBinary(NonInvertedMask));
+                                                 Console.WriteLine("    {0} <== MagicOrMask for XOR", Bonus.FormatBinary(MagicOrMask));
                                                  UInt32 result = Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask);
                                                  return result;
                                              });
             Boolean result = TestPopCount4(matches);
+            Console.WriteLine("  >>> IsMatch() call finish");
+            Console.WriteLine("");
+            Console.ReadLine();
             return result;
         }
     }
@@ -293,6 +367,22 @@ namespace learn_and_code
                 Console.WriteLine("Each group of four digits represents one card.");
                 Console.WriteLine("Each digit represents one facet.  Order: quantity, color, shading, shape");
                 Console.WriteLine("The digit indicates how many bits left we shift the low bit of the appropriate nybble.");
+                Console.WriteLine("       [Quantity.]                                 ");
+                Console.WriteLine("    {0} : One", Bonus.FormatBinary((UInt32)Card.FacetValue.One));
+                Console.WriteLine("    {0} : Two", Bonus.FormatBinary((UInt32)Card.FacetValue.Two));
+                Console.WriteLine("    {0} : Three", Bonus.FormatBinary((UInt32)Card.FacetValue.Three));
+                Console.WriteLine("                  [Color....]                      ");
+                Console.WriteLine("    {0} : Red", Bonus.FormatBinary((UInt32)Card.FacetValue.Red));
+                Console.WriteLine("    {0} : Purple", Bonus.FormatBinary((UInt32)Card.FacetValue.Purple));
+                Console.WriteLine("    {0} : Green", Bonus.FormatBinary((UInt32)Card.FacetValue.Green));
+                Console.WriteLine("                             [Shading..]           ");
+                Console.WriteLine("    {0} : Solid", Bonus.FormatBinary((UInt32)Card.FacetValue.Solid));
+                Console.WriteLine("    {0} : Striped", Bonus.FormatBinary((UInt32)Card.FacetValue.Striped));
+                Console.WriteLine("    {0} : Outlined", Bonus.FormatBinary((UInt32)Card.FacetValue.Outlined));
+                Console.WriteLine("                                        [Shape....]");
+                Console.WriteLine("    {0} : Oval", Bonus.FormatBinary((UInt32)Card.FacetValue.Oval));
+                Console.WriteLine("    {0} : Squiggle", Bonus.FormatBinary((UInt32)Card.FacetValue.Squiggle));
+                Console.WriteLine("    {0} : Diamond", Bonus.FormatBinary((UInt32)Card.FacetValue.Diamond));
                 Console.WriteLine("What card combination would you like to test?");
 
                 Card[] cards = Console.ReadLine().Split(" ").Select(x => new Card(x)).ToArray();
