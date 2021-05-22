@@ -142,7 +142,7 @@ namespace learn_and_code
             Console.ReadLine();
             Console.WriteLine("       [Quantity.][Color....][Shading..][Shape....]");
             Console.WriteLine("    {0} <== TestPopCount gives {1} (we wanted {2})", Bonus.FormatBinary(input), BitOperations.PopCount(input), expectedBitCount);
-            Console.WriteLine("  <<< TestPopCount() call finish");
+            Console.WriteLine("  >>> TestPopCount() call finish");
             Console.ReadLine();
             Console.WriteLine("");
             return BitOperations.PopCount(input) == expectedBitCount;
@@ -325,7 +325,7 @@ namespace learn_and_code
                                                  UInt32 result = a & facetValues;
                                                  Console.WriteLine("    {0} <==  facetValuesBeforePrep", Bonus.FormatBinary((UInt32)facetValuesBeforePrep));
                                                  Console.WriteLine("    {0} <== (facetValues              )", Bonus.FormatBinary(facetValues));
-                                                 Console.WriteLine("    {0} <==              & accumulator", Bonus.FormatBinary(a));
+                                                 Console.WriteLine("    {0} <== (              accumulator)", Bonus.FormatBinary(a));
                                                  Console.WriteLine("    {0} <== (facetValues & accumulator) <== new accumulator value", Bonus.FormatBinary(result));
                                                  return result;
                                              },
