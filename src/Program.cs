@@ -330,6 +330,7 @@ namespace learn_and_code
                                                  return result;
                                              },
                                              intersection => {
+                                                 Console.ReadLine();
                                                  Console.WriteLine("    {0} <== (intersection             )", Bonus.FormatBinary(intersection));
                                                  Console.WriteLine("    {0} <== (               MagicDelta)", Bonus.FormatBinary(MagicDelta));
                                                  UInt32 difference = intersection - MagicDelta;
