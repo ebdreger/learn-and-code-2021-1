@@ -154,7 +154,8 @@ namespace learn_and_code
             //     (MagicOrMask | InvertedMask)
             //
             // because it better explains what we are doing?
-            return Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask);
+            UInt32 result = Mask(facets ^ (facets >> 4), (UInt32)AllOneMask, MagicXorMask);
+            return result;
         }
 
         private static UInt32 PrepareFacetsForComparison(FacetValue facets)
@@ -212,20 +213,33 @@ namespace learn_and_code
 
         public FacetValue FindMatch(Card other)
         {
-            UInt32
-                union = (PrepareFacetsForComparison(FacetValues()) |
-                         PrepareFacetsForComparison(other.FacetValues())) & ~MagicOrMask,
-                xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
-            return (FacetValue)((union ^ xorMask) & NonInvertedMask);
+            UInt32 oursBeforePrep = (UInt32)FacetValues();
+            UInt32 theirsBeforePrep = (UInt32)other.FacetValues();
+            UInt32 ours = PrepareFacetsForComparison(oursBeforePrep);
+            UInt32 theirs = PrepareFacetsForComparison(theirsBeforePrep);
+            UInt32 union = (ours | theirs) & ~MagicOrMask;
+            UInt32 xorMask = ((union + MagicDelta) & MagicOrMask) * 0b1110;
+            UInt32 result = ((union ^ xorMask) & NonInvertedMask);
+            return (FacetValue)result;
         }
 
         public static Boolean IsMatch(Card[] cards)
         {
             Trace.Assert(3 == cards.Length);
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
-                                             (a, card) => a & PrepareFacetsForComparison(card.FacetValues()),
-                                             intersection => Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask));
-            return TestPopCount4(matches);
+                                             (a, card) => {
+                                                 FacetValue facetValuesBeforePrep = card.FacetValues();
+                                                 UInt32 facetValues = PrepareFacetsForComparison(facetValuesBeforePrep);
+                                                 UInt32 result = a & facetValues;
+                                                 return result;
+                                             },
+                                             intersection => {
+                                                 UInt32 difference = intersection - MagicDelta;
+                                                 UInt32 result = Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask);
+                                                 return result;
+                                             });
+            Boolean result = TestPopCount4(matches);
+            return result;
         }
     }
 
@@ -245,6 +259,10 @@ namespace learn_and_code
 
             while (true)
             {
+                Console.WriteLine("Enter a line in the form: \"2222 1123 3211\" (no quotes)");
+                Console.WriteLine("Each group of four digits represents one card.");
+                Console.WriteLine("Each digit represents one facet.  Order: quantity, color, shading, shape");
+                Console.WriteLine("The digit indicates how many bits left we shift the low bit of the appropriate nybble.");
                 Console.WriteLine("What card combination would you like to test?");
 
                 Card[] cards = Console.ReadLine().Split(" ").Select(x => new Card(x)).ToArray();
