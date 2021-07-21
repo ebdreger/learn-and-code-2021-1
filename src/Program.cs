@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
+/// This is branch "conflict-b"
+
 namespace learn_and_code
 {
     public class Card
