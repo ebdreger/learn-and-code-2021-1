@@ -211,6 +211,8 @@ namespace learn_and_code
 
         #endregion // Constructors
 
+        #region Logic // logic
+
         public FacetValue FindMatch(Card other)
         {
             UInt32 oursBeforePrep = (UInt32)FacetValues();
@@ -241,6 +243,8 @@ namespace learn_and_code
             Boolean result = TestPopCount4(matches);
             return result;
         }
+
+        #endregion // Logic
     }
 
     class Program
