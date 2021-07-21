@@ -66,7 +66,7 @@ namespace learn_and_code
             return _facetValues;
         }
 
-        #region BitBanging
+        #region BitBanging // bitbanging
 
         // special
         // XXX: TO DO - refactor in terms of one another
