@@ -186,7 +186,7 @@ namespace learn_and_code
             return TestPopCount4(FacetValues());
         }
 
-        #region Constructors
+        #region Constructors // ctors
 
         public Card (FacetValue facetValues)
         {
