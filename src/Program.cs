@@ -8,7 +8,7 @@ namespace learn_and_code
 {
     public class Card
     {
-        #region Enums
+        #region Enums // enums
 
         /// <summary>
         ///   Magical numbers that, when combined properly, describe any card.
