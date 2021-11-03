@@ -64,5 +64,20 @@ namespace learn_and_code.Tests
             Assert.Equal(expected, actual);
 
         }
+
+        [Fact]
+        public void FindMatch()
+        {
+            //Placeholder to test this function in the future
+            Assert.False(true);
+        }
+
+        [Fact]
+        public void FacetValues()
+        {
+            //Placeholder to test this function in the future
+            Assert.False(true);
+        }
+
     }
 }
