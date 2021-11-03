@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace learn_and_code
 {
-    public class Card
+    public class Card : ICard
     {
         #region Enums
 
@@ -18,24 +18,24 @@ namespace learn_and_code
         {
             // quantities
             DifferentQuantities = 0b__0001_0000__0000_0000__0000_0000__0000_0000,
-            One                 = (DifferentQuantities << 1),
-            Two                 = (DifferentQuantities << 2),
-            Three               = (DifferentQuantities << 3),
+            One = (DifferentQuantities << 1),
+            Two = (DifferentQuantities << 2),
+            Three = (DifferentQuantities << 3),
             // colors
-            DifferentColors     = 0b__0000_0000__0001_0000__0000_0000__0000_0000,
-            Red                 = (DifferentColors << 1),
-            Purple              = (DifferentColors << 2),
-            Green               = (DifferentColors << 3),
+            DifferentColors = 0b__0000_0000__0001_0000__0000_0000__0000_0000,
+            Red = (DifferentColors << 1),
+            Purple = (DifferentColors << 2),
+            Green = (DifferentColors << 3),
             // shading
-            DifferentShadings   = 0b__0000_0000__0000_0000__0001_0000__0000_0000,
-            Solid               = (DifferentShadings << 1),
-            Striped             = (DifferentShadings << 2),
-            Outlined            = (DifferentShadings << 3),
+            DifferentShadings = 0b__0000_0000__0000_0000__0001_0000__0000_0000,
+            Solid = (DifferentShadings << 1),
+            Striped = (DifferentShadings << 2),
+            Outlined = (DifferentShadings << 3),
             // shapes
-            DifferentShapes     = 0b__0000_0000__0000_0000__0000_0000__0001_0000,
-            Oval                = (DifferentShapes << 1),
-            Squiggle            = (DifferentShapes << 2),
-            Diamond             = (DifferentShapes << 3),
+            DifferentShapes = 0b__0000_0000__0000_0000__0000_0000__0001_0000,
+            Oval = (DifferentShapes << 1),
+            Squiggle = (DifferentShapes << 2),
+            Diamond = (DifferentShapes << 3),
         }
 
         /// <remarks>
@@ -46,10 +46,10 @@ namespace learn_and_code
         /// </remarks>
         private enum FacetMask : UInt32
         {
-            Quantity            = 0b__1110_0000__0000_0000__0000_0000__0000_0000,
-            Color               = 0b__0000_0000__1110_0000__0000_0000__0000_0000,
-            Shading             = 0b__0000_0000__0000_0000__1110_0000__0000_0000,
-            Shape               = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
+            Quantity = 0b__1110_0000__0000_0000__0000_0000__0000_0000,
+            Color = 0b__0000_0000__1110_0000__0000_0000__0000_0000,
+            Shading = 0b__0000_0000__0000_0000__1110_0000__0000_0000,
+            Shape = 0b__0000_0000__0000_0000__0000_0000__1110_0000,
         }
 
         #endregion // Enums
@@ -72,12 +72,12 @@ namespace learn_and_code
         // XXX: TO DO - refactor in terms of one another
         // XXX: TO DO - once below "MagicXorMask" is factored elsewhere, relocate these declarations to be ALAP
         // XXX: TO DO - ^^^ on second thought, ASAP seems to flow better
-        private static readonly UInt32 MagicOrMask     = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
-        private static readonly UInt32 MagicDelta      = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
+        private static readonly UInt32 MagicOrMask = 0b__0001_0000__0001_0000__0001_0000__0001_0000;
+        private static readonly UInt32 MagicDelta = 0b__0000_0010__0000_0010__0000_0010__0000_0010;
         private static readonly UInt32 NonInvertedMask = 0b__1111_0000__1111_0000__1111_0000__1111_0000;
-        private static readonly UInt32 InvertedMask    = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
-        private static readonly UInt32 MagicXorMask    = (MagicOrMask | InvertedMask);
-        private static readonly UInt32 FacetValueBase  = 0b__0001_0000;
+        private static readonly UInt32 InvertedMask = 0b__0000_1111__0000_1111__0000_1111__0000_1111;
+        private static readonly UInt32 MagicXorMask = (MagicOrMask | InvertedMask);
+        private static readonly UInt32 FacetValueBase = 0b__0001_0000;
 
         // XXX: TO DO
         // private delegate UInt32 MaskDelegate(UInt32 andMask, UInt32 xorMask);
@@ -188,13 +188,13 @@ namespace learn_and_code
 
         #region Constructors
 
-        public Card (FacetValue facetValues)
+        public Card(FacetValue facetValues)
         {
             this._facetValues = facetValues;
             Debug.Assert(IsValid());
         }
 
-        public Card (FacetValue quantity, FacetValue color, FacetValue shading, FacetValue shape)
+        public Card(FacetValue quantity, FacetValue color, FacetValue shading, FacetValue shape)
         {
             Trace.Assert(IsValidQuantity(quantity) &&
                          IsValidColor(color) &&
@@ -204,7 +204,7 @@ namespace learn_and_code
             Debug.Assert(IsValid());
         }
 
-        public Card (String input)
+        public Card(String input)
         {
             this._facetValues = StringToFacetValues(input);
         }
@@ -227,13 +227,15 @@ namespace learn_and_code
         {
             Trace.Assert(3 == cards.Length);
             UInt32 matches = cards.Aggregate((UInt32)AllOneMask,
-                                             (a, card) => {
+                                             (a, card) =>
+                                             {
                                                  FacetValue facetValuesBeforePrep = card.FacetValues();
                                                  UInt32 facetValues = PrepareFacetsForComparison(facetValuesBeforePrep);
                                                  UInt32 result = a & facetValues;
                                                  return result;
                                              },
-                                             intersection => {
+                                             intersection =>
+                                             {
                                                  UInt32 difference = intersection - MagicDelta;
                                                  UInt32 result = Mask((intersection - MagicDelta), NonInvertedMask, MagicOrMask);
                                                  return result;
